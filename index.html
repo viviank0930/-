@@ -1,0 +1,1503 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>今日灵签</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #fffaf2;
+      --muted: rgba(255, 250, 242, .74);
+      --glass: rgba(255, 255, 255, .18);
+      --glass-strong: rgba(255, 255, 255, .28);
+      --line: rgba(255, 255, 255, .28);
+      --gold: #ffe3a3;
+      --rose: #ff9fba;
+      --green: #a7f0d2;
+      --shadow: 0 24px 80px rgba(53, 13, 35, .38);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 227, 163, .36), transparent 23rem),
+        radial-gradient(circle at 86% 12%, rgba(255, 159, 186, .30), transparent 25rem),
+        radial-gradient(circle at 50% 94%, rgba(167, 240, 210, .22), transparent 30rem),
+        linear-gradient(145deg, #2c0010 0%, #401a4f 46%, #102b39 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 78%);
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app {
+      width: min(100%, 470px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+      position: relative;
+    }
+
+    .view {
+      min-height: calc(100svh - 40px);
+      display: none;
+      animation: rise .42s cubic-bezier(.2, .85, .2, 1);
+    }
+
+    .view.active { display: flex; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px) scale(.985); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .glass {
+      background: linear-gradient(145deg, rgba(255,255,255,.30), rgba(255,255,255,.12));
+      border: 1px solid rgba(255,255,255,.34);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.3);
+      backdrop-filter: blur(26px) saturate(160%);
+      -webkit-backdrop-filter: blur(26px) saturate(160%);
+    }
+
+    .scan-view {
+      align-items: center;
+      justify-content: center;
+      padding: 18px 0;
+    }
+
+    .scan-card {
+      width: 100%;
+      padding: 22px;
+      border-radius: 28px;
+      text-align: center;
+    }
+
+    .qr-wrap {
+      width: min(72vw, 282px);
+      aspect-ratio: 1;
+      margin: 18px auto 20px;
+      padding: 16px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.92);
+      box-shadow: inset 0 0 0 1px rgba(54,74,120,.08), 0 18px 40px rgba(31,57,110,.24);
+    }
+
+    #qr img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      image-rendering: pixelated;
+    }
+
+    .qr-link {
+      margin: -8px 0 0;
+      color: rgba(248,251,255,.58);
+      font-size: 12px;
+      word-break: break-all;
+    }
+
+    .headline {
+      margin: 0;
+      font-size: clamp(32px, 9vw, 46px);
+      line-height: 1.05;
+      letter-spacing: 0;
+      font-weight: 800;
+    }
+
+    .sub {
+      margin: 12px auto 0;
+      max-width: 21em;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .primary {
+      min-height: 54px;
+      width: 100%;
+      border-radius: 999px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, rgba(157,231,255,.98), rgba(255,159,199,.94));
+      color: #14203f;
+      font-weight: 800;
+      box-shadow: 0 12px 34px rgba(114, 190, 255, .26), inset 0 1px 0 rgba(255,255,255,.56);
+    }
+
+    .secondary-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      min-height: 40px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .start-view {
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    .start-symbol {
+      width: min(54vw, 220px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 34%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .start-symbol .symbol-ring {
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255,255,255,.26);
+      border-radius: 32%;
+    }
+
+    .start-symbol::before {
+      content: "接";
+      font-size: clamp(76px, 25vw, 112px);
+      font-weight: 800;
+      color: rgba(248, 251, 255, .94);
+      text-shadow: 0 14px 42px rgba(255,227,163,.30);
+    }
+
+    .start-symbol::after {
+      content: "婆婆送好运";
+      position: absolute;
+      bottom: 26px;
+      left: 0;
+      right: 0;
+      color: rgba(248,251,255,.72);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      padding: 24px 20px 20px;
+      border-radius: 28px;
+    }
+
+    .ritual-note {
+      margin-top: 20px;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      color: rgba(248,251,255,.72);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .story-card {
+      padding: 18px;
+      border-radius: 24px;
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .granny-mark {
+      width: 76px;
+      aspect-ratio: 1;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 29%, rgba(255,250,242,.95) 0 18px, transparent 19px),
+        radial-gradient(circle at 50% 58%, rgba(255,250,242,.92) 0 27px, transparent 28px),
+        linear-gradient(145deg, rgba(255,227,163,.60), rgba(255,159,186,.34));
+      border: 1px solid rgba(255,255,255,.32);
+      position: relative;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.34);
+    }
+
+    .granny-mark::before,
+    .granny-mark::after {
+      content: "";
+      position: absolute;
+      top: 27px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3c1f34;
+      box-shadow: 0 14px 0 -3px #3c1f34;
+    }
+
+    .granny-mark::before { left: 26px; }
+    .granny-mark::after { right: 26px; }
+
+    .story-card h2 {
+      margin: 0 0 6px;
+      font-size: 19px;
+      letter-spacing: 0;
+    }
+
+    .story-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .cover-view {
+      align-items: center;
+      justify-content: center;
+      padding: 18px 0;
+    }
+
+    .cover-card {
+      width: 100%;
+      min-height: 78svh;
+      border-radius: 32px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .slip-stage {
+      width: 100%;
+      min-height: 370px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .slip-stage::before {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,227,163,.22);
+      box-shadow: 0 0 0 42px rgba(255,255,255,.035);
+    }
+
+    .paper {
+      width: min(60vw, 210px);
+      min-height: 300px;
+      background:
+        linear-gradient(180deg, rgba(255,252,244,.98), rgba(255,245,229,.95)),
+        radial-gradient(circle at 70% 84%, rgba(255,159,186,.22), transparent 8rem);
+      color: #311528;
+      clip-path: polygon(24% 0, 76% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
+      border: 1px solid rgba(255,255,255,.8);
+      padding: 34px 18px 22px;
+      position: absolute;
+      box-shadow: 0 18px 48px rgba(0,0,0,.24);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .paper.is-left {
+      transform: translateX(-88px) rotate(-10deg) scale(.88);
+      opacity: .72;
+      z-index: 1;
+    }
+
+    .paper.is-main {
+      transform: translateY(-4px);
+      z-index: 3;
+    }
+
+    .paper.is-right {
+      transform: translateX(88px) rotate(10deg) scale(.88);
+      opacity: .72;
+      z-index: 1;
+    }
+
+    .paper::after {
+      content: attr(data-seal);
+      position: absolute;
+      right: 20px;
+      bottom: 22px;
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid rgba(49, 21, 40, .42);
+      color: rgba(49,21,40,.48);
+      transform: rotate(15deg);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .paper-kicker {
+      width: max-content;
+      margin: 0 auto 18px;
+      padding: 7px 16px;
+      background: #311528;
+      color: #f8fbff;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .paper-title {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .paper-copy {
+      margin: 14px auto 0;
+      max-width: 11em;
+      color: rgba(49,21,40,.66);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .cover-copy {
+      width: min(82vw, 330px);
+      margin: 0;
+      color: rgba(248,251,255,.74);
+      text-align: center;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .result-view {
+      flex-direction: column;
+      gap: 18px;
+      padding: 12px 0 22px;
+    }
+
+    .result-hero {
+      padding: 24px 18px 22px;
+      border-radius: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .charm {
+      width: 62px;
+      height: 92px;
+      margin: 0 auto 12px;
+      border: 2px solid rgba(255,255,255,.9);
+      background: rgba(255,255,255,.12);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .blessing-tag {
+      width: max-content;
+      margin: 0 auto 12px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,250,242,.78);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .fortune-name {
+      margin: 0;
+      font-size: clamp(44px, 15vw, 72px);
+      line-height: .98;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 12px 35px rgba(255,216,137,.2);
+    }
+
+    .fortune-poem {
+      margin: 12px auto 0;
+      max-width: 19em;
+      color: rgba(255,255,255,.78);
+      line-height: 1.72;
+      font-size: 15px;
+    }
+
+    .blessing-panel {
+      padding: 16px;
+      border-radius: 24px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .blessing-panel h2 {
+      margin: 0;
+      color: var(--gold);
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .blessing-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 14px;
+    }
+
+    .reading-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .reading {
+      min-height: 112px;
+      border-radius: 24px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .reading:nth-child(even) {
+      grid-template-columns: 1fr 58px;
+      text-align: right;
+    }
+
+    .reading:nth-child(even) .stamp { order: 2; }
+
+    .stamp {
+      width: 48px;
+      height: 72px;
+      border: 1.5px solid rgba(255,255,255,.72);
+      border-radius: 14px;
+      justify-self: center;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 22px;
+      font-weight: 900;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.26);
+    }
+
+    .reading h3 {
+      margin: 0 0 7px;
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+
+    .reading p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    /* 摇签与分享卡片相关样式 */
+    .ritual-view {
+      align-items: center;
+      justify-content: center;
+      padding: 18px 0;
+    }
+
+    .ritual-card {
+      width: 100%;
+      border-radius: 28px;
+      padding: 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cylinder-stage {
+      width: 100%;
+      height: 280px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      margin: 10px 0 20px;
+      isolation: isolate;
+    }
+
+    .cylinder-glow {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(255, 227, 163, 0.25) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 1;
+    }
+
+    .cylinder {
+      width: 80px;
+      height: 140px;
+      position: relative;
+      transform-origin: bottom center;
+      z-index: 3;
+      cursor: pointer;
+    }
+
+    .cylinder-body {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(135deg, #8b1324 0%, #b81d33 50%, #720b18 100%);
+      border: 2px solid #ffe3a3;
+      border-radius: 12px 12px 20px 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(255, 255, 255, 0.3);
+      display: grid;
+      place-items: center;
+    }
+
+    .cylinder-label {
+      color: #ffe3a3;
+      font-size: 14px;
+      font-weight: 800;
+      border: 1px solid rgba(255, 227, 163, 0.4);
+      padding: 4px 6px;
+      border-radius: 4px;
+      line-height: 1.2;
+      background: rgba(0, 0, 0, 0.2);
+      letter-spacing: 2px;
+    }
+
+    .sticks {
+      position: absolute;
+      top: -30px;
+      left: 10px;
+      right: 10px;
+      height: 60px;
+      display: flex;
+      justify-content: space-around;
+      z-index: 2;
+    }
+
+    .stick {
+      width: 6px;
+      height: 70px;
+      background: linear-gradient(to bottom, #d2a45a, #b08137);
+      border-radius: 3px 3px 0 0;
+      border: 1px solid #91631e;
+      transform-origin: bottom center;
+      transition: transform 0.3s ease;
+    }
+
+    .stick.s1 { transform: rotate(-15deg) translateY(5px); }
+    .stick.s2 { transform: rotate(-7deg) translateY(0px); }
+    .stick.s3 { transform: rotate(0deg) translateY(-3px); }
+    .stick.s4 { transform: rotate(5deg) translateY(2px); }
+    .stick.s5 { transform: rotate(12deg) translateY(-2px); }
+    .stick.s6 { transform: rotate(18deg) translateY(6px); }
+
+    @keyframes cylinderShake {
+      0% { transform: rotate(0deg); }
+      10% { transform: rotate(12deg) translateY(-5px); }
+      20% { transform: rotate(-12deg) translateY(2px); }
+      30% { transform: rotate(10deg) translateY(-3px); }
+      40% { transform: rotate(-10deg) translateY(1px); }
+      50% { transform: rotate(8deg) translateY(-4px); }
+      60% { transform: rotate(-8deg) translateY(0px); }
+      70% { transform: rotate(6deg) translateY(-2px); }
+      80% { transform: rotate(-6deg) translateY(1px); }
+      90% { transform: rotate(3deg) translateY(-1px); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .cylinder.shaking {
+      animation: cylinderShake 0.6s infinite ease-in-out;
+    }
+
+    .cylinder.shaking .stick.s1 { transform: rotate(-25deg) translateY(-10px); }
+    .cylinder.shaking .stick.s2 { transform: rotate(-12deg) translateY(-15px); }
+    .cylinder.shaking .stick.s3 { transform: rotate(5deg) translateY(-18px); }
+    .cylinder.shaking .stick.s4 { transform: rotate(15deg) translateY(-12px); }
+    .cylinder.shaking .stick.s5 { transform: rotate(25deg) translateY(-14px); }
+    .cylinder.shaking .stick.s6 { transform: rotate(30deg) translateY(-8px); }
+
+    .drawn-stick {
+      position: absolute;
+      width: 50px;
+      height: 180px;
+      background: linear-gradient(180deg, #fce8c7 0%, #e8ba74 100%);
+      border: 2px solid #ffe3a3;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(100px) rotate(45deg) scale(0.5);
+      pointer-events: none;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 6px;
+    }
+
+    .drawn-stick.show {
+      opacity: 1;
+      transform: translateY(-20px) rotate(0deg) scale(1.1);
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .drawn-stick:hover {
+      transform: translateY(-25px) rotate(1deg) scale(1.15);
+      box-shadow: 0 20px 45px rgba(255, 227, 163, 0.25);
+    }
+
+    .drawn-stick .stick-tag {
+      background: #8b1324;
+      color: #ffe3a3;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 4px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
+
+    .drawn-stick .stick-text {
+      color: #8b1324;
+      font-size: 20px;
+      font-weight: 900;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 4px;
+    }
+
+    .paper.is-main {
+      transform: translateY(-4px);
+      z-index: 3;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+      cursor: pointer;
+    }
+    .paper.is-main:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 22px 54px rgba(0,0,0,0.3);
+    }
+    .paper.is-main.slide-out {
+      transform: translateY(-400px) rotate(-5deg);
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+    }
+
+    .share-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(16, 8, 14, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .share-modal.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .share-modal-content {
+      width: min(100%, 360px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: scaleUp 0.38s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .share-card {
+      width: 100%;
+      background: #fdfaf6;
+      color: #2b1216;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .card-border-outer {
+      border: 3px double #b88b4a;
+      border-radius: 12px;
+      padding: 4px;
+      height: 100%;
+    }
+
+    .card-border-inner {
+      border: 1px solid rgba(184, 139, 74, 0.4);
+      border-radius: 6px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      background-image: 
+        radial-gradient(rgba(184, 139, 74, 0.03) 1px, transparent 0),
+        radial-gradient(rgba(184, 139, 74, 0.03) 1px, transparent 0);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #8c7355;
+      font-weight: 700;
+    }
+
+    .card-seal {
+      border: 1px solid #b88b4a;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(184, 139, 74, 0.05);
+      letter-spacing: 1px;
+    }
+
+    .card-date {
+      letter-spacing: 0.5px;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    .card-user {
+      font-size: 15px;
+      font-weight: 800;
+      color: #4a2d1b;
+      margin-bottom: 8px;
+    }
+
+    .card-divider {
+      width: 40px;
+      height: 1px;
+      background: #b88b4a;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    
+    .card-divider::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #b88b4a;
+      transform: rotate(45deg);
+      left: 18px;
+      top: -1.5px;
+    }
+
+    .card-fortune-stamp {
+      width: 68px;
+      height: 68px;
+      border: 3px double #b81d33;
+      border-radius: 50%;
+      color: #b81d33;
+      font-size: 24px;
+      font-weight: 900;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      transform: rotate(-10deg);
+      box-shadow: 0 0 0 2px rgba(184, 29, 51, 0.1), inset 0 0 0 1px rgba(184, 29, 51, 0.15);
+      background: rgba(184, 29, 51, 0.02);
+      font-family: "Georgia", "SimSun", "STSong", serif;
+      letter-spacing: 2px;
+      text-indent: 2px;
+    }
+
+    .card-poem-vertical {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.8;
+      color: #2b1216;
+      max-width: 14em;
+      text-align: center;
+      font-family: "Georgia", "SimSun", "STSong", serif;
+      letter-spacing: 1px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid rgba(184, 139, 74, 0.2);
+      padding-top: 12px;
+      margin-top: 10px;
+    }
+
+    .card-qr-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #cardQr {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border: 1px solid rgba(184, 139, 74, 0.3);
+      padding: 2px;
+      border-radius: 4px;
+    }
+
+    #cardQr svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .card-qr-container span {
+      font-size: 9px;
+      color: #8c7355;
+      writing-mode: vertical-rl;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .share-tip {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 12px 0 6px;
+      text-align: center;
+    }
+
+    @media (min-width: 760px) {
+      .app { width: min(100%, 520px); }
+      .scan-card { padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="scanView" class="view scan-view">
+      <div class="scan-card glass">
+        <h1 class="headline">今日灵签</h1>
+        <p class="sub">用手机扫描二维码，进入抽签。页面会从“大吉、吉、小吉”里为你开出今日一签。</p>
+        <div class="qr-wrap"><div id="qr" aria-label="扫码进入今日灵签"><img src="qr-entry.png" alt="扫码进入今日灵签"></div></div>
+        <p id="qrLink" class="qr-link"></p>
+        <button class="primary" data-go="start">本机预览</button>
+        <div class="secondary-row">
+          <button class="pill" data-copy>复制链接</button>
+          <button class="pill" data-go="result" data-randomize>直接看签</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="startView" class="view start-view">
+      <div class="start-symbol glass" aria-hidden="true"></div>
+      <div class="intro glass">
+        <h1 class="headline">请静心</h1>
+        <p class="sub">默念今日所问，轻触按钮开签。风来有信，签上有意。</p>
+        
+        <!-- 姓名输入框 -->
+        <div style="margin: 20px 0; text-align: left;">
+          <label for="userNameInput" style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px;">您的称呼（选填，生成专属签卡）：</label>
+          <input type="text" id="userNameInput" maxlength="10" placeholder="例如：知己、行者" style="width: 100%; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: var(--ink); padding: 0 14px; font-size: 15px; outline: none; transition: border 0.3s; font-family: inherit;">
+        </div>
+
+        <button class="primary" data-go="ritual">开始抽签</button>
+        <div class="secondary-row">
+          <button class="pill" data-go="scan">返回二维码</button>
+          <button class="pill" data-go="result" data-randomize>跳过动画</button>
+        </div>
+        <p class="ritual-note">今日一签只抽一次也很好。深呼吸三秒，把心里最想问的事放轻，再点击开始。</p>
+      </div>
+    </section>
+
+    <section id="ritualView" class="view ritual-view">
+      <div class="ritual-card glass">
+        <h1 class="headline">求签仪式</h1>
+        <p class="sub">静心祈愿，点击签筒或下方按钮进行摇签。</p>
+        
+        <div class="cylinder-stage">
+          <div id="cylinderGlow" class="cylinder-glow"></div>
+          <div id="cylinder" class="cylinder">
+            <div class="cylinder-body">
+              <span class="cylinder-label">今日<br>灵签</span>
+            </div>
+            <div class="sticks">
+              <div class="stick s1"></div>
+              <div class="stick s2"></div>
+              <div class="stick s3"></div>
+              <div class="stick s4"></div>
+              <div class="stick s5"></div>
+              <div class="stick s6"></div>
+            </div>
+          </div>
+          <div id="drawnStick" class="drawn-stick">
+            <div class="stick-tag">今日一签</div>
+            <div id="drawnStickText" class="stick-text">大吉签</div>
+          </div>
+        </div>
+
+        <button id="shakeBtn" class="primary">摇晃签筒</button>
+        <div class="secondary-row" style="width: 100%;">
+          <button class="pill" data-go="start">重新静心</button>
+          <button class="pill" data-go="result" data-randomize>跳过动效</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="coverView" class="view cover-view">
+      <div class="cover-card glass">
+        <div class="slip-stage">
+          <div class="paper is-left" data-seal="安"></div>
+          <div class="paper is-main" data-seal="启">
+            <div>
+              <div class="paper-kicker">今日签封</div>
+              <h2 class="paper-title">待启</h2>
+              <p class="paper-copy">签文已落在封中。轻触信封或点击下方揭签按钮开封。</p>
+            </div>
+          </div>
+          <div class="paper is-right" data-seal="吉"></div>
+        </div>
+        <p class="cover-copy">轻触揭签，查看今日运势、行动建议和一句提醒。</p>
+        <button class="primary" id="revealBtn">揭签</button>
+      </div>
+    </section>
+
+    <section id="resultView" class="view result-view">
+      <div class="result-hero glass">
+        <div class="charm">签</div>
+        <div id="resultNameLabel" style="font-size: 14px; color: var(--muted); margin-bottom: 6px; display: none;"></div>
+        <h1 id="fortuneName" class="fortune-name">大吉</h1>
+        <p id="fortunePoem" class="fortune-poem">云开月明，所行多顺。今日宜主动一步，喜事自会靠近。</p>
+      </div>
+      <div id="readingList" class="reading-list"></div>
+      <div class="actions" style="grid-template-columns: 1fr; margin-bottom: 2px;">
+        <button class="primary" style="margin-top: 0; min-height: 48px;" id="shareCardBtn">生成分享签卡</button>
+      </div>
+      <div class="actions">
+        <button class="pill" data-go="start">重新求签</button>
+        <button class="pill" data-go="scan">二维码进入</button>
+      </div>
+    </section>
+
+    <!-- 分享卡片 Modal -->
+    <div id="shareModal" class="share-modal" aria-hidden="true">
+      <div class="share-modal-content">
+        <div id="shareCard" class="share-card">
+          <div class="card-border-outer">
+            <div class="card-border-inner">
+              <div class="card-header">
+                <span class="card-seal">今日灵签</span>
+                <span id="cardDate" class="card-date">二零二六年六月十八日</span>
+              </div>
+              
+              <div class="card-body">
+                <div id="cardUser" class="card-user">有缘人 问卜</div>
+                <div class="card-divider"></div>
+                <div id="cardFortune" class="card-fortune-stamp">大吉</div>
+                <div id="cardPoem" class="card-poem-vertical">云开月明，所行多顺。今日宜主动一步，喜事自会靠近。</div>
+              </div>
+              
+              <div class="card-footer">
+                <div class="card-qr-container">
+                  <div id="cardQr"></div>
+                  <span>扫码亦求一签</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="share-tip">提示：截图或长按上方卡片即可分享</p>
+        <button id="closeShareBtn" class="primary" style="margin-top: 10px; width: 100%; min-height: 46px;">返回</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const fortunes = {
+      super_great: {
+        name: "上上",
+        poem: "云开日出万里程，指日高升步步前。宜行好事，多结善缘。",
+        accent: "#9de7ff",
+        readings: [
+          ["今日运势", "鸿运当头，所求皆顺。无论是事业还是人际，都有贵人暗中相助。"],
+          ["行动建议", "今日适合开启新计划，或者表达心意，积极行动会有意想不到的收获。"],
+          ["提醒", "满招损，谦受益。好运来临时更需保持低调与感恩之心。"]
+        ]
+      },
+      great: {
+        name: "大吉",
+        poem: "风雷相送出平川，一跃青云路万千。今日宜展现自我，把握良机。",
+        accent: "#ffe3a3",
+        readings: [
+          ["今日运势", "气势如虹，才华展露。在工作中或学业上容易获得认可与赞赏。"],
+          ["行动建议", "主动承担一些有挑战性的任务，多在公开场合发表自己的观点。"],
+          ["提醒", "莫因一时得意而疏忽细节，稳步前行才能让好运持久。"]
+        ]
+      },
+      good: {
+        name: "中吉",
+        poem: "风平水暖，稳中见喜。把节奏放缓，答案会慢慢浮出来。",
+        accent: "#99f0d4",
+        readings: [
+          ["今日运势", "整体平稳顺遂，适合处理日常事务、修补漏洞或重温旧好。"],
+          ["行动建议", "按部就班完成今日计划，午后适合喝杯茶或与旧友联系。"],
+          ["提醒", "不要急于求成，有些事情需要时间沉淀才能看到结果。"]
+        ]
+      },
+      small: {
+        name: "小吉",
+        poem: "微光入户，小喜可期。暂不求快，守住心气便是进展。",
+        accent: "#ff9fc7",
+        readings: [
+          ["今日运势", "小有收获，生活中会遇到一些温馨的微小瞬间或小确幸。"],
+          ["行动建议", "给身边的亲人或同事带份小礼物，或者整理一下桌面换个心情。"],
+          ["提醒", "专注自己手头的事，不要被外界的嘈杂杂音打乱了阵脚。"]
+        ]
+      },
+      half: {
+        name: "半吉",
+        poem: "顺水行舟不费力，扬帆起航正当时。凡事顺应天时，自有安排。",
+        accent: "#cbf0a7",
+        readings: [
+          ["今日运势", "运势平顺，阻碍较少。只要顺应自然规律，就能轻松应对。"],
+          ["行动建议", "适合做一些规划、构思的工作，多倾听他人的意见。"],
+          ["提醒", "顺水推舟虽好，但也要把控方向，切忌盲目跟风。"]
+        ]
+      },
+      peace: {
+        name: "平吉",
+        poem: "万里无云碧空净，清风拂面步履轻。平淡之中见真意，安之若素。",
+        accent: "#e3d2ff",
+        readings: [
+          ["今日运势", "波澜不惊，无大喜亦无大忧。适合修身养性，放松身心。"],
+          ["行动建议", "多做深呼吸，下班后散散步，或者读一本喜欢的小说。"],
+          ["提醒", "平静是最大的福气，好好享受这难得的安闲时光。"]
+        ]
+      }
+    };
+
+    let currentFortune = randomFortune();
+
+    function randomFortune() {
+      const keys = ["super_great", "great", "good", "small", "half", "peace"];
+      return keys[Math.floor(Math.random() * keys.length)];
+    }
+
+    function targetUrl() {
+      const defaultLanIp = "192.168.10.180";
+      const localHosts = ["localhost", "127.0.0.1", "0.0.0.0"];
+      const port = location.port ? `:${location.port}` : "";
+      
+      let origin = location.origin;
+      if (localHosts.includes(location.hostname)) {
+        origin = `http://${defaultLanIp}${port}`;
+      }
+      return `${origin}${location.pathname}#start`;
+    }
+
+    function show(view) {
+      document.querySelectorAll(".view").forEach(el => el.classList.remove("active"));
+      document.getElementById(`${view}View`).classList.add("active");
+      history.replaceState(null, "", view === "scan" ? location.pathname : `#${view}`);
+      
+      // Reset ritual state when entering ritual view
+      if (view === "ritual") {
+        const cylinder = document.getElementById("cylinder");
+        const shakeBtn = document.getElementById("shakeBtn");
+        const drawnStick = document.getElementById("drawnStick");
+        const glow = document.getElementById("cylinderGlow");
+        if (cylinder) cylinder.classList.remove("shaking");
+        if (drawnStick) drawnStick.classList.remove("show");
+        if (glow) glow.style.opacity = "0";
+        if (shakeBtn) {
+          shakeBtn.disabled = false;
+          shakeBtn.textContent = "摇晃签筒";
+        }
+      }
+      
+      if (view === "result") renderFortune(currentFortune);
+    }
+
+    function renderFortune(key) {
+      currentFortune = key;
+      localStorage.setItem("fortune-key", key);
+      const item = fortunes[key];
+      document.documentElement.style.setProperty("--gold", item.accent);
+      document.getElementById("fortuneName").textContent = item.name;
+      document.getElementById("fortunePoem").textContent = item.poem;
+      document.getElementById("readingList").innerHTML = item.readings.map(([title, text]) => `
+        <article class="reading glass">
+          <div class="stamp" aria-hidden="true">${title.slice(0, 1)}</div>
+          <div><h3>${title}</h3><p>${text}</p></div>
+        </article>
+      `).join("");
+
+      // Personalized username display
+      const userName = sessionStorage.getItem("fortune-username") || "";
+      const nameLabel = document.getElementById("resultNameLabel");
+      if (nameLabel) {
+        if (userName) {
+          nameLabel.textContent = `— ${userName} 的今日一签 —`;
+          nameLabel.style.display = "block";
+        } else {
+          nameLabel.style.display = "none";
+        }
+      }
+    }
+
+    // Traditional Chinese date converter
+    function getChineseDate() {
+      const now = new Date();
+      const year = now.getFullYear().toString().split("").map(d => "零一二三四五六七八九"[d]).join("");
+      const months = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"];
+      const mStr = months[now.getMonth()] + "月";
+      
+      const day = now.getDate();
+      let dStr = "";
+      if (day <= 10) {
+        dStr = "初" + "一二三四五六七八九十"[day - 1];
+      } else if (day < 20) {
+        dStr = "十" + "一二三四五六七八九"[day - 10 - 1];
+      } else if (day === 20) {
+        dStr = "二十";
+      } else if (day < 30) {
+        dStr = "廿" + "一二三四五六七八九"[day - 20 - 1];
+      } else if (day === 30) {
+        dStr = "三十";
+      } else {
+        dStr = "卅一";
+      }
+      return `${year}年 ${mStr}${dStr}`;
+    }
+
+    // Setup interactive events
+    document.addEventListener("DOMContentLoaded", () => {
+      // Setup dynamic QR
+      document.getElementById("qrLink").textContent = targetUrl();
+      const qrContainer = document.getElementById("qr");
+      if (qrContainer) {
+        qrContainer.innerHTML = makeQrSvg(targetUrl());
+      }
+
+      // Cylinder Shake interaction
+      const cylinder = document.getElementById("cylinder");
+      const shakeBtn = document.getElementById("shakeBtn");
+      const drawnStick = document.getElementById("drawnStick");
+      const drawnStickText = document.getElementById("drawnStickText");
+      const glow = document.getElementById("cylinderGlow");
+      
+      let isShaking = false;
+      function startShake() {
+        if (isShaking) return;
+        isShaking = true;
+        drawnStick.classList.remove("show");
+        cylinder.classList.add("shaking");
+        if (glow) glow.style.opacity = "0.8";
+        shakeBtn.disabled = true;
+        shakeBtn.textContent = "正在虔诚求签...";
+        
+        setTimeout(() => {
+          cylinder.classList.remove("shaking");
+          if (glow) glow.style.opacity = "0.2";
+          currentFortune = randomFortune();
+          drawnStickText.textContent = fortunes[currentFortune].name + "签";
+          drawnStick.classList.add("show");
+          shakeBtn.textContent = "已求得灵签，请点击竹签揭晓";
+          isShaking = false;
+        }, 1500);
+      }
+      if (shakeBtn) shakeBtn.addEventListener("click", startShake);
+      if (cylinder) cylinder.addEventListener("click", startShake);
+
+      if (drawnStick) {
+        drawnStick.addEventListener("click", () => {
+          show("cover");
+        });
+      }
+
+      // Cover View - tactile Reveal interaction
+      const revealBtn = document.getElementById("revealBtn");
+      const mainPaper = document.querySelector(".paper.is-main");
+      function triggerReveal() {
+        if (mainPaper.classList.contains("slide-out")) return;
+        mainPaper.classList.add("slide-out");
+        setTimeout(() => {
+          show("result");
+          mainPaper.classList.remove("slide-out");
+        }, 450);
+      }
+      if (revealBtn) revealBtn.addEventListener("click", triggerReveal);
+      if (mainPaper) mainPaper.addEventListener("click", triggerReveal);
+
+      // Share modal controls
+      const shareCardBtn = document.getElementById("shareCardBtn");
+      const shareModal = document.getElementById("shareModal");
+      const closeShareBtn = document.getElementById("closeShareBtn");
+      
+      if (shareCardBtn) {
+        shareCardBtn.addEventListener("click", () => {
+          document.getElementById("cardDate").textContent = getChineseDate();
+          document.getElementById("cardUser").textContent = (sessionStorage.getItem("fortune-username") || "有缘人") + " 问卜";
+          
+          const item = fortunes[currentFortune];
+          const stamp = document.getElementById("cardFortune");
+          stamp.textContent = item.name;
+          stamp.style.borderColor = item.accent;
+          stamp.style.color = item.accent;
+          
+          document.getElementById("cardPoem").textContent = item.poem;
+          document.getElementById("cardQr").innerHTML = makeQrSvg(targetUrl());
+          
+          shareModal.classList.add("active");
+        });
+      }
+      
+      if (closeShareBtn) {
+        closeShareBtn.addEventListener("click", () => {
+          shareModal.classList.remove("active");
+        });
+      }
+      
+      if (shareModal) {
+        shareModal.addEventListener("click", (e) => {
+          if (e.target === shareModal) {
+            shareModal.classList.remove("active");
+          }
+        });
+      }
+    });
+
+    // Global document clicks for data-go and data-copy
+    document.addEventListener("click", event => {
+      const go = event.target.closest("[data-go]");
+      const copy = event.target.closest("[data-copy]");
+      if (go) {
+        if (go.hasAttribute("data-randomize")) currentFortune = randomFortune();
+        
+        // Storing name if moving from start view
+        if (go.dataset.go === "ritual" || go.dataset.go === "cover" || go.dataset.go === "result") {
+          const nameInput = document.getElementById("userNameInput");
+          if (nameInput) {
+            sessionStorage.setItem("fortune-username", nameInput.value.trim());
+          }
+        }
+        
+        show(go.dataset.go);
+      }
+      if (copy) {
+        navigator.clipboard?.writeText(targetUrl());
+        copy.textContent = "已复制";
+        setTimeout(() => copy.textContent = "复制链接", 1200);
+      }
+    });
+
+    window.addEventListener("hashchange", () => {
+      const targetHash = location.hash.replace("#", "") || "scan";
+      // Allow entering standard views
+      if (["scan", "start", "ritual", "cover", "result"].includes(targetHash)) {
+        show(targetHash);
+      }
+    });
+
+    function makeQrSvg(text) {
+      const qr = QR.create(text);
+      const size = qr.length;
+      let d = "";
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          if (qr[y][x]) d += `M${x + 4},${y + 4}h1v1h-1z`;
+        }
+      }
+      return `<svg viewBox="0 0 ${size + 8} ${size + 8}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#111"/></svg>`;
+    }
+
+    const QR = (() => {
+      const version = 5;
+      const size = 17 + version * 4;
+      const dataCodewords = 108;
+      const eccCodewords = 26;
+      const exp = Array(512).fill(0);
+      const log = Array(256).fill(0);
+      let x = 1;
+      for (let i = 0; i < 255; i++) {
+        exp[i] = x;
+        log[x] = i;
+        x <<= 1;
+        if (x & 0x100) x ^= 0x11d;
+      }
+      for (let i = 255; i < 512; i++) exp[i] = exp[i - 255];
+
+      function gfMul(a, b) { return a && b ? exp[log[a] + log[b]] : 0; }
+
+      function reedSolomon(data) {
+        let poly = [1];
+        for (let i = 0; i < eccCodewords; i++) {
+          const next = Array(poly.length + 1).fill(0);
+          for (let j = 0; j < poly.length; j++) {
+            next[j] ^= gfMul(poly[j], exp[i]);
+            next[j + 1] ^= poly[j];
+          }
+          poly = next;
+        }
+        const res = Array(eccCodewords).fill(0);
+        for (const byte of data) {
+          const factor = byte ^ res.shift();
+          res.push(0);
+          for (let i = 0; i < eccCodewords; i++) res[i] ^= gfMul(poly[i], factor);
+        }
+        return res;
+      }
+
+      function bitsToBytes(bits) {
+        const out = [];
+        for (let i = 0; i < bits.length; i += 8) out.push(parseInt(bits.slice(i, i + 8).join(""), 2));
+        return out;
+      }
+
+      function encode(text) {
+        const bytes = Array.from(new TextEncoder().encode(text));
+        const bits = [0,1,0,0];
+        bytes.length.toString(2).padStart(8, "0").split("").forEach(b => bits.push(+b));
+        bytes.forEach(byte => byte.toString(2).padStart(8, "0").split("").forEach(b => bits.push(+b)));
+        const maxBits = dataCodewords * 8;
+        for (let i = 0; i < 4 && bits.length < maxBits; i++) bits.push(0);
+        while (bits.length % 8) bits.push(0);
+        let data = bitsToBytes(bits);
+        for (let pad = 0; data.length < dataCodewords; pad++) data.push(pad % 2 ? 0x11 : 0xec);
+        return data.concat(reedSolomon(data));
+      }
+
+      function create(text) {
+        const m = Array.from({ length: size }, () => Array(size).fill(null));
+        const reserved = Array.from({ length: size }, () => Array(size).fill(false));
+        const set = (r, c, val, lock = true) => {
+          if (r < 0 || c < 0 || r >= size || c >= size) return;
+          m[r][c] = !!val;
+          if (lock) reserved[r][c] = true;
+        };
+        const finder = (r, c) => {
+          for (let y = -1; y <= 7; y++) for (let x = -1; x <= 7; x++) {
+            const rr = r + y, cc = c + x;
+            const dark = y >= 0 && y <= 6 && x >= 0 && x <= 6 && (y === 0 || y === 6 || x === 0 || x === 6 || (y >= 2 && y <= 4 && x >= 2 && x <= 4));
+            set(rr, cc, dark);
+          }
+        };
+        finder(0, 0); finder(0, size - 7); finder(size - 7, 0);
+        for (let i = 8; i < size - 8; i++) {
+          set(6, i, i % 2 === 0);
+          set(i, 6, i % 2 === 0);
+        }
+        const align = [6, 30];
+        align.forEach(r => align.forEach(c => {
+          if (reserved[r][c]) return;
+          for (let y = -2; y <= 2; y++) for (let x = -2; x <= 2; x++) {
+            set(r + y, c + x, Math.max(Math.abs(x), Math.abs(y)) !== 1);
+          }
+        }));
+        set(size - 8, 8, true);
+        for (let i = 0; i < 9; i++) {
+          if (i !== 6) { reserved[8][i] = true; reserved[i][8] = true; }
+        }
+        for (let i = size - 8; i < size; i++) { reserved[8][i] = true; reserved[i][8] = true; }
+        const bits = encode(text).flatMap(byte => byte.toString(2).padStart(8, "0").split("").map(Number));
+        let bit = 0, up = true;
+        for (let col = size - 1; col > 0; col -= 2) {
+          if (col === 6) col--;
+          for (let i = 0; i < size; i++) {
+            const row = up ? size - 1 - i : i;
+            for (let dx = 0; dx < 2; dx++) {
+              const c = col - dx;
+              if (!reserved[row][c]) {
+                const mask = (row + c) % 2 === 0;
+                m[row][c] = ((bits[bit++] || 0) === 1) !== mask;
+              }
+            }
+          }
+          up = !up;
+        }
+        const format = formatBits(1, 0);
+        for (let i = 0; i < 15; i++) {
+          const bitVal = ((format >> i) & 1) === 1;
+          const a = [[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]][i];
+          const b = [[size-1,8],[size-2,8],[size-3,8],[size-4,8],[size-5,8],[size-6,8],[size-7,8],[8,size-8],[8,size-7],[8,size-6],[8,size-5],[8,size-4],[8,size-3],[8,size-2],[8,size-1]][i];
+          m[a[0]][a[1]] = bitVal;
+          m[b[0]][b[1]] = bitVal;
+        }
+        return m.map(row => row.map(Boolean));
+      }
+
+      function formatBits(ecl, mask) {
+        let data = (ecl << 3) | mask;
+        let bits = data << 10;
+        const gen = 0x537;
+        for (let i = 14; i >= 10; i--) if ((bits >> i) & 1) bits ^= gen << (i - 10);
+        return (((data << 10) | bits) ^ 0x5412) & 0x7fff;
+      }
+
+      return { create };
+    })();
+
+    // Initial page view check
+    const initial = location.hash.replace("#", "");
+    show(["start", "ritual", "cover", "result"].includes(initial) ? initial : "scan");
+  </script>
+</body>
+</html>
