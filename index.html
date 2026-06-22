@@ -763,25 +763,51 @@
       to { opacity: 1; transform: scale(1); }
     }
 
+    /* Share Card Themes */
+    .share-card.theme-red {
+      --card-border: #b88b4a;
+      --card-border-rgb: 184, 139, 74;
+      --card-accent: #b81d33;
+      --card-bg: #fdfaf6;
+      --card-ink: #2b1216;
+    }
+
+    .share-card.theme-green {
+      --card-border: #8ba888;
+      --card-border-rgb: 139, 168, 136;
+      --card-accent: #2a6f56;
+      --card-bg: #f5f8f5;
+      --card-ink: #1b2d24;
+    }
+
+    .share-card.theme-gold {
+      --card-border: #d4ad6a;
+      --card-border-rgb: 212, 173, 106;
+      --card-accent: #b07823;
+      --card-bg: #fdfaf2;
+      --card-ink: #382410;
+    }
+
     .share-card {
       width: 100%;
-      background: #fdfaf6;
-      color: #2b1216;
+      background: var(--card-bg, #fdfaf6);
+      color: var(--card-ink, #2b1216);
       border-radius: 20px;
       padding: 16px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
       position: relative;
+      transition: all 0.3s ease;
     }
 
     .card-border-outer {
-      border: 3px double #b88b4a;
+      border: 3px double var(--card-border, #b88b4a);
       border-radius: 12px;
       padding: 4px;
       height: 100%;
     }
 
     .card-border-inner {
-      border: 1px solid rgba(184, 139, 74, 0.4);
+      border: 1px solid rgba(var(--card-border-rgb, 184, 139, 74), 0.4);
       border-radius: 6px;
       padding: 16px 14px;
       display: flex;
@@ -789,8 +815,8 @@
       justify-content: space-between;
       min-height: 380px;
       background-image: 
-        radial-gradient(rgba(184, 139, 74, 0.03) 1px, transparent 0),
-        radial-gradient(rgba(184, 139, 74, 0.03) 1px, transparent 0);
+        radial-gradient(rgba(var(--card-border-rgb, 184, 139, 74), 0.03) 1px, transparent 0),
+        radial-gradient(rgba(var(--card-border-rgb, 184, 139, 74), 0.03) 1px, transparent 0);
       background-size: 8px 8px;
       background-position: 0 0, 4px 4px;
     }
@@ -800,15 +826,16 @@
       justify-content: space-between;
       align-items: center;
       font-size: 11px;
-      color: #8c7355;
+      color: var(--card-accent, #b81d33);
+      opacity: 0.85;
       font-weight: 700;
     }
 
     .card-seal {
-      border: 1px solid #b88b4a;
+      border: 1px solid var(--card-border, #b88b4a);
       padding: 2px 6px;
       border-radius: 3px;
-      background: rgba(184, 139, 74, 0.05);
+      background: rgba(var(--card-border-rgb, 184, 139, 74), 0.05);
       letter-spacing: 1px;
     }
 
@@ -826,16 +853,16 @@
     }
 
     .card-user {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
-      color: #4a2d1b;
+      color: var(--card-ink, #2b1216);
       margin-bottom: 8px;
     }
 
     .card-divider {
       width: 40px;
       height: 1px;
-      background: #b88b4a;
+      background: var(--card-border, #b88b4a);
       margin-bottom: 16px;
       position: relative;
     }
@@ -845,7 +872,7 @@
       position: absolute;
       width: 4px;
       height: 4px;
-      background: #b88b4a;
+      background: var(--card-border, #b88b4a);
       transform: rotate(45deg);
       left: 18px;
       top: -1.5px;
@@ -854,17 +881,17 @@
     .card-fortune-stamp {
       width: 68px;
       height: 68px;
-      border: 3px double #b81d33;
+      border: 3px double var(--card-accent, #b81d33);
       border-radius: 50%;
-      color: #b81d33;
+      color: var(--card-accent, #b81d33);
       font-size: 24px;
       font-weight: 900;
       display: grid;
       place-items: center;
       margin-bottom: 16px;
       transform: rotate(-10deg);
-      box-shadow: 0 0 0 2px rgba(184, 29, 51, 0.1), inset 0 0 0 1px rgba(184, 29, 51, 0.15);
-      background: rgba(184, 29, 51, 0.02);
+      box-shadow: 0 0 0 2px rgba(var(--card-border-rgb, 184, 139, 74), 0.1), inset 0 0 0 1px rgba(var(--card-border-rgb, 184, 139, 74), 0.15);
+      background: rgba(var(--card-border-rgb, 184, 139, 74), 0.02);
       font-family: "Georgia", "SimSun", "STSong", serif;
       letter-spacing: 2px;
       text-indent: 2px;
@@ -874,7 +901,7 @@
       font-size: 16px;
       font-weight: 700;
       line-height: 1.8;
-      color: #2b1216;
+      color: var(--card-ink, #2b1216);
       max-width: 14em;
       text-align: center;
       font-family: "Georgia", "SimSun", "STSong", serif;
@@ -885,7 +912,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-top: 1px solid rgba(184, 139, 74, 0.2);
+      border-top: 1px solid rgba(var(--card-border-rgb, 184, 139, 74), 0.2);
       padding-top: 12px;
       margin-top: 10px;
     }
@@ -900,7 +927,7 @@
       width: 44px;
       height: 44px;
       background: white;
-      border: 1px solid rgba(184, 139, 74, 0.3);
+      border: 1px solid rgba(var(--card-border-rgb, 184, 139, 74), 0.3);
       padding: 2px;
       border-radius: 4px;
     }
@@ -912,7 +939,7 @@
 
     .card-qr-container span {
       font-size: 9px;
-      color: #8c7355;
+      color: var(--card-border, #b88b4a);
       writing-mode: vertical-rl;
       letter-spacing: 1px;
       font-weight: 600;
@@ -923,6 +950,111 @@
       color: rgba(255, 255, 255, 0.5);
       margin: 12px 0 6px;
       text-align: center;
+    }
+
+    /* Customize panel styles */
+    .small-pill {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: rgba(255, 255, 255, 0.74);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .small-pill.active {
+      background: var(--gold);
+      color: #14203f;
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+
+    .color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      padding: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    
+    .color-dot:hover {
+      transform: scale(1.15);
+    }
+
+    /* Muyu Styles */
+    .muyu-container {
+      position: relative;
+      width: 170px;
+      height: 170px;
+      margin: 14px auto 10px;
+      border-radius: 34%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      overflow: visible;
+    }
+    
+    .muyu-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      transition: background 0.3s, transform 0.2s;
+    }
+    
+    .muyu-dot.active {
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+      transform: scale(1.25);
+    }
+
+    /* Mallet Styles */
+    #muyuMallet {
+      position: absolute;
+      top: -10px;
+      right: -15px;
+      width: 60px;
+      height: 60px;
+      transform-origin: 80% 80%;
+      transform: rotate(20deg);
+      transition: transform 0.08s cubic-bezier(0.25, 0.8, 0.25, 1.25);
+      pointer-events: none;
+      z-index: 5;
+    }
+    #muyuMallet.striking {
+      transform: rotate(-15deg) scale(0.92);
+    }
+
+    /* Name Input Styles & Shake Animation */
+    #userNameInput {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    #userNameInput:focus {
+      border-color: var(--gold) !important;
+      background: rgba(255,255,255,0.12) !important;
+      box-shadow: 0 0 12px rgba(255,227,163,0.3);
+    }
+    @keyframes inputShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake-error {
+      animation: inputShake 0.4s ease-in-out;
+      border-color: #ff9fba !important;
+      box-shadow: 0 0 12px rgba(255, 159, 186, 0.45) !important;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-60px) scale(1.15); opacity: 0; }
     }
 
     @media (min-width: 760px) {
@@ -948,23 +1080,66 @@
     </section>
 
     <section id="startView" class="view start-view">
-      <div class="start-symbol glass" aria-hidden="true"></div>
       <div class="intro glass">
-        <h1 class="headline">请静心</h1>
-        <p class="sub">默念今日所问，轻触按钮开签。风来有信，签上有意。</p>
+        <h1 class="headline" style="text-align: center;">请静心</h1>
+        <p class="sub" style="text-align: center;">输入称呼，默念所求，轻触木鱼以涤净心中杂念。</p>
         
         <!-- 姓名输入框 -->
-        <div style="margin: 20px 0; text-align: left;">
-          <label for="userNameInput" style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px;">您的称呼（选填，生成专属签卡）：</label>
-          <input type="text" id="userNameInput" maxlength="10" placeholder="例如：知己、行者" style="width: 100%; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: var(--ink); padding: 0 14px; font-size: 15px; outline: none; transition: border 0.3s; font-family: inherit;">
+        <div style="margin: 14px 0 16px; text-align: left;">
+          <label for="userNameInput" style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">您的称呼（必填，生成专属签卡）：</label>
+          <input type="text" id="userNameInput" maxlength="10" placeholder="例如：知己、行者" style="width: 100%; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: var(--ink); padding: 0 14px; font-size: 14px; outline: none; transition: border 0.3s; font-family: inherit;">
         </div>
 
-        <button class="primary" data-go="ritual">开始抽签</button>
+        <!-- 电子木鱼容器 -->
+        <div class="muyu-container" id="muyuBtn">
+          <!-- Floating text container -->
+          <div id="floatingContainer" style="position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 10;"></div>
+          
+          <div id="muyuWrap" style="transition: transform 0.08s ease; transform-origin: center; position: relative;">
+            <svg id="muyuSvg" viewBox="0 0 100 100" width="85" height="85" style="cursor: pointer; fill: none; stroke: var(--gold); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity 0.2s;">
+              <!-- Body -->
+              <path d="M 50 12 C 28 12 18 28 18 52 C 18 72 32 82 50 82 C 68 82 82 72 82 52 C 82 28 72 12 50 12 Z" />
+              <!-- Grooves -->
+              <path d="M 32 50 Q 50 64 68 50" />
+              <path d="M 38 40 Q 50 48 62 40" />
+              <!-- Handle -->
+              <path d="M 40 82 Q 50 72 60 82" />
+              <circle cx="50" cy="74" r="3" />
+              <!-- Edges -->
+              <path d="M 24 52 Q 18 56 24 60" />
+              <path d="M 76 52 Q 82 56 76 60" />
+            </svg>
+            <!-- Wooden Fish Mallet -->
+            <div id="muyuMallet">
+              <svg viewBox="0 0 100 100" width="100%" height="100%" style="fill: none; stroke: var(--gold); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;">
+                <!-- Handle -->
+                <path d="M 80 80 L 35 35" />
+                <!-- Head -->
+                <circle cx="30" cy="30" r="14" style="fill: var(--gold); stroke: var(--gold);" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 敲击计数显示 -->
+        <div style="text-align: center; margin: 4px 0 10px; font-size: 14px; color: var(--gold); font-weight: 700;">
+          已敲木鱼 <span id="muyuCountDisplay" style="font-size: 18px; color: var(--ink); background: rgba(255,255,255,0.12); padding: 2px 8px; border-radius: 8px; margin: 0 4px; border: 1px solid rgba(255,255,255,0.15);">0</span> 次
+        </div>
+
+        <!-- 计数器点 indicators -->
+        <div style="display: flex; justify-content: center; gap: 10px; margin: 6px 0 12px;">
+          <span class="muyu-dot" id="dot1"></span>
+          <span class="muyu-dot" id="dot2"></span>
+          <span class="muyu-dot" id="dot3"></span>
+        </div>
+
+        <button id="startRitualBtn" class="primary" style="margin-top: 10px; min-height: 52px;">静心完毕，开启求签</button>
+
         <div class="secondary-row">
           <button class="pill" data-go="scan">返回二维码</button>
-          <button class="pill" data-go="result" data-randomize>跳过动画</button>
+          <button class="pill" id="skipRitualBtn">直接求签</button>
         </div>
-        <p class="ritual-note">今日一签只抽一次也很好。深呼吸三秒，把心里最想问的事放轻，再点击开始。</p>
+        <p class="ritual-note" style="margin-top: 14px;">在屏幕上轻触木鱼静心，输入称呼后，即可开启求签仪式。称呼将用于生成专属的分享签卡。</p>
       </div>
     </section>
 
@@ -1028,6 +1203,36 @@
         <p id="fortunePoem" class="fortune-poem">云开月明，所行多顺。今日宜主动一步，喜事自会靠近。</p>
       </div>
       <div id="readingList" class="reading-list"></div>
+      
+      <!-- 签卡定制区域 -->
+      <div class="customize-panel glass" style="padding: 16px; border-radius: 24px; margin-top: 4px; text-align: left; display: grid; gap: 14px;">
+        <h3 style="margin: 0; font-size: 14px; color: var(--gold); letter-spacing: 0.5px;">定制您的分享签卡</h3>
+        
+        <!-- 求问类型 -->
+        <div>
+          <span style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px;">选择所问主题：</span>
+          <div class="pill-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="small-pill active" data-subject="总运">总运</button>
+            <button class="small-pill" data-subject="姻缘">姻缘</button>
+            <button class="small-pill" data-subject="事业">事业</button>
+            <button class="small-pill" data-subject="财运">财运</button>
+            <button class="small-pill" data-subject="学业">学业</button>
+            <button class="small-pill" data-subject="健康">健康</button>
+          </div>
+        </div>
+        
+        <!-- 签卡配色 -->
+        <div>
+          <span style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px;">选择卡片皮肤：</span>
+          <div class="color-picker" style="display: flex; gap: 14px; align-items: center;">
+            <button class="color-dot active red" data-theme="red" style="background: #b81d33; border: 2px solid #fff;"></button>
+            <button class="color-dot green" data-theme="green" style="background: #2a6f56; border: 2px solid transparent;"></button>
+            <button class="color-dot gold" data-theme="gold" style="background: #d49e4d; border: 2px solid transparent;"></button>
+            <span id="themeNameLabel" style="font-size: 12px; color: var(--muted);">朱砂红</span>
+          </div>
+        </div>
+      </div>
+
       <div class="actions" style="grid-template-columns: 1fr; margin-bottom: 2px;">
         <button class="primary" style="margin-top: 0; min-height: 48px;" id="shareCardBtn">生成分享签卡</button>
       </div>
@@ -1153,11 +1358,208 @@
       return `${origin}${location.pathname}#start`;
     }
 
+    // Web Audio Sound Synthesizer
+    const SoundSynth = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playClatter() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140 + Math.random() * 120, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.05);
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      },
+      playMuyu() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        
+        // Transient impact (short bandpass filtered white noise)
+        const noiseLen = Math.floor(this.ctx.sampleRate * 0.012); // ~12ms
+        const noiseBuf = this.ctx.createBuffer(1, noiseLen, this.ctx.sampleRate);
+        const noiseData = noiseBuf.getChannelData(0);
+        for (let i = 0; i < noiseLen; i++) {
+          noiseData[i] = Math.random() * 2 - 1;
+        }
+        const noiseSource = this.ctx.createBufferSource();
+        noiseSource.buffer = noiseBuf;
+        
+        const noiseFilter = this.ctx.createBiquadFilter();
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.setValueAtTime(1100, now);
+        noiseFilter.Q.setValueAtTime(5.0, now);
+        
+        const noiseGain = this.ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.06, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.01);
+        
+        noiseSource.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(this.ctx.destination);
+        noiseSource.start(now);
+        noiseSource.stop(now + 0.015);
+        
+        // Main resonance (fundamental wood tone)
+        const osc1 = this.ctx.createOscillator();
+        const gain1 = this.ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(740, now);
+        osc1.frequency.exponentialRampToValueAtTime(460, now + 0.025);
+        
+        gain1.gain.setValueAtTime(0.48, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+        
+        osc1.connect(gain1);
+        gain1.connect(this.ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.14);
+        
+        // Secondary resonance (hollow chamber body reflections)
+        const osc2 = this.ctx.createOscillator();
+        const gain2 = this.ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1120, now);
+        osc2.frequency.exponentialRampToValueAtTime(800, now + 0.015);
+        
+        gain2.gain.setValueAtTime(0.22, now);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+        
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+        osc2.start(now);
+        osc2.stop(now + 0.08);
+      },
+      playChime() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const frequencies = [440, 554.37, 659.25, 880];
+        frequencies.forEach((freq, index) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.linearRampToValueAtTime(freq + 3, now + 1.2);
+          gain.gain.setValueAtTime(0.12 / frequencies.length, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5 + index * 0.1);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 2.0);
+        });
+      },
+      playSwoosh() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * 0.35;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const source = this.ctx.createBufferSource();
+        source.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(300, now);
+        filter.frequency.exponentialRampToValueAtTime(1500, now + 0.28);
+        filter.Q.setValueAtTime(3.0, now);
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        source.start(now);
+        source.stop(now + 0.35);
+      }
+    };
+
+    // Wooden Fish (Muyu) Variables and logic
+    let muyuTaps = 0;
+    let muyuTransitioning = false;
+
+    function initMuyu() {
+      muyuTaps = 0;
+      muyuTransitioning = false;
+      document.querySelectorAll(".muyu-dot").forEach(dot => {
+        dot.classList.remove("active");
+      });
+      const wrap = document.getElementById("muyuWrap");
+      if (wrap) wrap.style.transform = "scale(1)";
+      const countDisp = document.getElementById("muyuCountDisplay");
+      if (countDisp) countDisp.textContent = "0";
+      const mallet = document.getElementById("muyuMallet");
+      if (mallet) mallet.style.transform = "rotate(20deg)";
+    }
+
+    function spawnFloatingText(text, container) {
+      const el = document.createElement("div");
+      el.textContent = text;
+      el.style.position = "absolute";
+      el.style.left = `${30 + Math.random() * 40}%`; // random horizontal spread
+      el.style.top = "30%";
+      el.style.color = "var(--gold)";
+      el.style.fontSize = "15px";
+      el.style.fontWeight = "800";
+      el.style.pointerEvents = "none";
+      el.style.zIndex = "10";
+      el.style.animation = "floatUp 0.8s ease-out forwards";
+      
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 800);
+    }
+
     function show(view) {
+      // Guard: require name to access ritual, cover, or result views
+      if (["ritual", "cover", "result"].includes(view)) {
+        const saved = sessionStorage.getItem("fortune-username") || localStorage.getItem("fortune-username") || "";
+        const currentInput = document.getElementById("userNameInput")?.value.trim() || "";
+        const name = currentInput || saved;
+        if (!name) {
+          show("start");
+          setTimeout(() => {
+            const nameInput = document.getElementById("userNameInput");
+            if (nameInput) {
+              nameInput.classList.add("shake-error");
+              nameInput.focus();
+              setTimeout(() => nameInput.classList.remove("shake-error"), 400);
+            }
+          }, 100);
+          return;
+        } else {
+          sessionStorage.setItem("fortune-username", name);
+          localStorage.setItem("fortune-username", name);
+          const nameInput = document.getElementById("userNameInput");
+          if (nameInput) nameInput.value = name;
+        }
+      }
+
       document.querySelectorAll(".view").forEach(el => el.classList.remove("active"));
       document.getElementById(`${view}View`).classList.add("active");
       history.replaceState(null, "", view === "scan" ? location.pathname : `#${view}`);
       
+      if (view === "start") {
+        initMuyu();
+      }
+
       // Reset ritual state when entering ritual view
       if (view === "ritual") {
         const cylinder = document.getElementById("cylinder");
@@ -1245,6 +1647,7 @@
       const glow = document.getElementById("cylinderGlow");
       
       let isShaking = false;
+      let shakeSoundInterval = null;
       function startShake() {
         if (isShaking) return;
         isShaking = true;
@@ -1254,13 +1657,22 @@
         shakeBtn.disabled = true;
         shakeBtn.textContent = "正在虔诚求签...";
         
+        SoundSynth.playClatter();
+        shakeSoundInterval = setInterval(() => {
+          if (isShaking) SoundSynth.playClatter();
+        }, 120);
+        
         setTimeout(() => {
+          clearInterval(shakeSoundInterval);
           cylinder.classList.remove("shaking");
           if (glow) glow.style.opacity = "0.2";
           currentFortune = randomFortune();
           drawnStickText.textContent = fortunes[currentFortune].name + "签";
           drawnStick.classList.add("show");
-          shakeBtn.textContent = "已求得灵签，请点击竹签揭晓";
+          
+          SoundSynth.playChime(); // Play drawn chime!
+          
+          shakeBtn.textContent = "已求得灵签，请点击竹签揭开";
           isShaking = false;
         }, 1500);
       }
@@ -1279,6 +1691,7 @@
       function triggerReveal() {
         if (mainPaper.classList.contains("slide-out")) return;
         mainPaper.classList.add("slide-out");
+        SoundSynth.playSwoosh(); // Play swoosh sound!
         setTimeout(() => {
           show("result");
           mainPaper.classList.remove("slide-out");
@@ -1286,6 +1699,37 @@
       }
       if (revealBtn) revealBtn.addEventListener("click", triggerReveal);
       if (mainPaper) mainPaper.addEventListener("click", triggerReveal);
+
+      // Customize Panel Events
+      let selectedSubject = "总运";
+      let selectedTheme = "red";
+      
+      const smallPills = document.querySelectorAll(".small-pill");
+      smallPills.forEach(pill => {
+        pill.addEventListener("click", () => {
+          smallPills.forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          selectedSubject = pill.dataset.subject;
+          SoundSynth.playClatter(); // Play click clatter
+        });
+      });
+
+      const colorDots = document.querySelectorAll(".color-dot");
+      const themeNameLabel = document.getElementById("themeNameLabel");
+      const themesMap = {
+        red: "朱砂红",
+        green: "竹青绿",
+        gold: "香槟金"
+      };
+      colorDots.forEach(dot => {
+        dot.addEventListener("click", () => {
+          colorDots.forEach(d => d.style.borderColor = "transparent");
+          dot.style.borderColor = "#fff";
+          selectedTheme = dot.dataset.theme;
+          if (themeNameLabel) themeNameLabel.textContent = themesMap[selectedTheme];
+          SoundSynth.playClatter(); // Play click clatter
+        });
+      });
 
       // Share modal controls
       const shareCardBtn = document.getElementById("shareCardBtn");
@@ -1295,17 +1739,21 @@
       if (shareCardBtn) {
         shareCardBtn.addEventListener("click", () => {
           document.getElementById("cardDate").textContent = getChineseDate();
-          document.getElementById("cardUser").textContent = (sessionStorage.getItem("fortune-username") || "有缘人") + " 问卜";
+          
+          const userText = (sessionStorage.getItem("fortune-username") || "有缘人");
+          document.getElementById("cardUser").textContent = `${userText} 问卜 [${selectedSubject}]`;
           
           const item = fortunes[currentFortune];
           const stamp = document.getElementById("cardFortune");
           stamp.textContent = item.name;
-          stamp.style.borderColor = item.accent;
-          stamp.style.color = item.accent;
+          
+          const shareCard = document.getElementById("shareCard");
+          shareCard.className = "share-card theme-" + selectedTheme;
           
           document.getElementById("cardPoem").textContent = item.poem;
           document.getElementById("cardQr").innerHTML = makeQrSvg(targetUrl());
           
+          SoundSynth.playChime(); // Play bell chime on card popup!
           shareModal.classList.add("active");
         });
       }
@@ -1323,6 +1771,91 @@
           }
         });
       }
+      // Wooden Fish click handler setup
+      const muyuBtn = document.getElementById("muyuBtn");
+      const floatingContainer = document.getElementById("floatingContainer");
+      const textPool = ["功德 +1", "静心 +1", "好运 +1", "福气 +1", "烦恼 -1", "智慧 +1"];
+
+      if (muyuBtn) {
+        muyuBtn.addEventListener("click", () => {
+          // Sound & bounce animation
+          SoundSynth.playMuyu();
+          const wrap = document.getElementById("muyuWrap");
+          if (wrap) {
+            wrap.style.transform = "scale(0.92)";
+            setTimeout(() => wrap.style.transform = "scale(1)", 80);
+          }
+
+          // Mallet animation
+          const mallet = document.getElementById("muyuMallet");
+          if (mallet) {
+            mallet.classList.add("striking");
+            setTimeout(() => mallet.classList.remove("striking"), 80);
+          }
+
+          muyuTaps++;
+          
+          // Display tap count
+          const countDisp = document.getElementById("muyuCountDisplay");
+          if (countDisp) countDisp.textContent = muyuTaps;
+
+          // Toggle dot active (up to 3 dots)
+          const dot = document.getElementById(`dot${muyuTaps}`);
+          if (dot) {
+            dot.classList.add("active");
+            if (muyuTaps === 3) {
+              SoundSynth.playChime(); // Play bell chime on the 3rd completion tap!
+            }
+          }
+
+          // Floating text
+          const randomText = textPool[Math.floor(Math.random() * textPool.length)];
+          spawnFloatingText(randomText, floatingContainer);
+        });
+      }
+
+      // Name Input Setup & listeners
+      const nameInput = document.getElementById("userNameInput");
+      if (nameInput) {
+        // Prefill saved username if exists
+        const savedName = localStorage.getItem("fortune-username") || sessionStorage.getItem("fortune-username") || "";
+        if (savedName) {
+          nameInput.value = savedName;
+        }
+
+        nameInput.addEventListener("input", () => {
+          const val = nameInput.value.trim();
+          sessionStorage.setItem("fortune-username", val);
+          localStorage.setItem("fortune-username", val);
+        });
+
+        nameInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            show("ritual");
+          }
+        });
+      }
+
+      // Start & skip buttons listeners
+      const startRitualBtn = document.getElementById("startRitualBtn");
+      if (startRitualBtn) {
+        startRitualBtn.addEventListener("click", () => {
+          show("ritual");
+        });
+      }
+
+      const skipRitualBtn = document.getElementById("skipRitualBtn");
+      if (skipRitualBtn) {
+        skipRitualBtn.addEventListener("click", () => {
+          show("ritual");
+        });
+      }
+
+      // Start initial muyu if page starts on start view
+      const initial = location.hash.replace("#", "");
+      if (initial === "start" || !initial) {
+        initMuyu();
+      }
     });
 
     // Global document clicks for data-go and data-copy
@@ -1336,7 +1869,11 @@
         if (go.dataset.go === "ritual" || go.dataset.go === "cover" || go.dataset.go === "result") {
           const nameInput = document.getElementById("userNameInput");
           if (nameInput) {
-            sessionStorage.setItem("fortune-username", nameInput.value.trim());
+            const val = nameInput.value.trim();
+            if (val) {
+              sessionStorage.setItem("fortune-username", val);
+              localStorage.setItem("fortune-username", val);
+            }
           }
         }
         
