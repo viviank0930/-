@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>今日灵签</title>
+  <title>Daily Fortune Oracle</title>
   <style>
     :root {
       color-scheme: dark;
-      --ink: #fffaf2;
-      --muted: rgba(255, 250, 242, .74);
-      --glass: rgba(255, 255, 255, .18);
-      --glass-strong: rgba(255, 255, 255, .28);
-      --line: rgba(255, 255, 255, .28);
-      --gold: #ffe3a3;
-      --rose: #ff9fba;
-      --green: #a7f0d2;
-      --shadow: 0 24px 80px rgba(53, 13, 35, .38);
+      --ink: #ffdca2;
+      --muted: rgba(255, 220, 162, 0.74);
+      --glass: rgba(255, 255, 255, 0.18);
+      --glass-strong: rgba(255, 255, 255, 0.28);
+      --line: rgba(255, 255, 255, 0.28);
+      --gold: #e6c143;
+      --rose: #ff2555;
+      --orange: #ff6524;
+      --shadow: 0 24px 80px rgba(78, 23, 27, 0.38);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     }
 
@@ -27,10 +27,10 @@
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(circle at 12% 8%, rgba(255, 227, 163, .36), transparent 23rem),
-        radial-gradient(circle at 86% 12%, rgba(255, 159, 186, .30), transparent 25rem),
-        radial-gradient(circle at 50% 94%, rgba(167, 240, 210, .22), transparent 30rem),
-        linear-gradient(145deg, #2c0010 0%, #401a4f 46%, #102b39 100%);
+        radial-gradient(circle at 12% 8%, rgba(255, 37, 85, 0.28), transparent 23rem),
+        radial-gradient(circle at 86% 12%, rgba(255, 101, 36, 0.24), transparent 25rem),
+        radial-gradient(circle at 50% 94%, rgba(230, 193, 67, 0.18), transparent 30rem),
+        linear-gradient(145deg, #4e171b 0%, #300f12 50%, #1e1112 100%);
       overflow-x: hidden;
     }
 
@@ -103,11 +103,16 @@
       margin: 18px auto 20px;
       padding: 16px;
       border-radius: 28px;
-      background: rgba(255,255,255,.92);
+      background: #ffffff;
       box-shadow: inset 0 0 0 1px rgba(54,74,120,.08), 0 18px 40px rgba(31,57,110,.24);
     }
 
-    #qr img {
+    #qr {
+      width: 100%;
+      height: 100%;
+    }
+
+    #qr img, #qr svg {
       display: block;
       width: 100%;
       height: 100%;
@@ -143,10 +148,16 @@
       width: 100%;
       border-radius: 999px;
       margin-top: 20px;
-      background: linear-gradient(135deg, rgba(157,231,255,.98), rgba(255,159,199,.94));
-      color: #14203f;
+      background: linear-gradient(135deg, #ffdca2 0%, #e6c143 100%);
+      color: #3e1215;
       font-weight: 800;
-      box-shadow: 0 12px 34px rgba(114, 190, 255, .26), inset 0 1px 0 rgba(255,255,255,.56);
+      box-shadow: 0 10px 25px rgba(230, 193, 67, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .primary:active {
+      transform: scale(0.985);
+      box-shadow: 0 6px 15px rgba(230, 193, 67, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
     .secondary-row {
@@ -192,7 +203,7 @@
     }
 
     .start-symbol::before {
-      content: "接";
+      content: "Zen";
       font-size: clamp(76px, 25vw, 112px);
       font-weight: 800;
       color: rgba(248, 251, 255, .94);
@@ -200,7 +211,7 @@
     }
 
     .start-symbol::after {
-      content: "婆婆送好运";
+      content: "Granny's Blessings";
       position: absolute;
       bottom: 26px;
       left: 0;
@@ -317,13 +328,15 @@
     .paper {
       width: min(60vw, 210px);
       min-height: 300px;
-      background:
-        linear-gradient(180deg, rgba(255,252,244,.98), rgba(255,245,229,.95)),
-        radial-gradient(circle at 70% 84%, rgba(255,159,186,.22), transparent 8rem);
+      background-color: #fdfaf3;
+      background-image:
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><pattern id="waves" width="20" height="10" patternUnits="userSpaceOnUse"><path d="M 0 10 A 10 10 0 0 1 20 10 M -10 5 A 10 10 0 0 1 10 5 A 10 10 0 0 1 30 5" fill="none" stroke="%23e6c143" stroke-width="0.5" opacity="0.12" /></pattern></defs><polygon points="24,0 76,0 100,15 100,100 0,100 0,15" fill="url(%23waves)" /><polygon points="25.5,3 74.5,3 97,15.5 97,97 3,97 3,15.5" fill="none" stroke="%23e6c143" stroke-width="1.2" vector-effect="non-scaling-stroke" opacity="0.75" /><polygon points="24,1.5 76,1.5 98.5,14 98.5,98.5 1.5,98.5 1.5,14" fill="none" stroke="%23b2434a" stroke-width="1.2" vector-effect="non-scaling-stroke" stroke-dasharray="4 2.5" opacity="0.85" /></svg>'),
+        linear-gradient(180deg, #fdfbf7 0%, #f7f1e3 100%);
+      background-size: 100% 100%, 100% 100%;
       color: #311528;
       clip-path: polygon(24% 0, 76% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
       border: 1px solid rgba(255,255,255,.8);
-      padding: 34px 18px 22px;
+      padding: 48px 18px 22px;
       position: absolute;
       box-shadow: 0 18px 48px rgba(0,0,0,.24);
       text-align: center;
@@ -356,12 +369,29 @@
       bottom: 22px;
       width: 38px;
       height: 38px;
-      border: 1.5px solid rgba(49, 21, 40, .42);
-      color: rgba(49,21,40,.48);
-      transform: rotate(15deg);
+      border: 2px solid #b2434a;
+      background: rgba(178, 67, 74, 0.04);
+      box-shadow: inset 0 0 4px rgba(178, 67, 74, 0.1);
+      border-radius: 4px;
+      color: #b2434a;
+      transform: rotate(12deg);
       display: grid;
       place-items: center;
-      font-weight: 800;
+      font-weight: 900;
+      font-family: "Georgia", "STSong", "SimSun", serif;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .omamori-knot {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 44px;
+      z-index: 5;
+      pointer-events: none;
     }
 
     .paper-kicker {
@@ -534,7 +564,7 @@
       margin-top: 2px;
     }
 
-    /* 摇签与分享卡片相关样式 */
+    /* Oracle cylinder and share card styles */
     .ritual-view {
       align-items: center;
       justify-content: center;
@@ -765,27 +795,27 @@
 
     /* Share Card Themes */
     .share-card.theme-red {
-      --card-border: #b88b4a;
-      --card-border-rgb: 184, 139, 74;
-      --card-accent: #b81d33;
+      --card-border: #b2434a;
+      --card-border-rgb: 178, 67, 74;
+      --card-accent: #ff2555;
       --card-bg: #fdfaf6;
-      --card-ink: #2b1216;
+      --card-ink: #4e171b;
     }
 
-    .share-card.theme-green {
-      --card-border: #8ba888;
-      --card-border-rgb: 139, 168, 136;
-      --card-accent: #2a6f56;
-      --card-bg: #f5f8f5;
-      --card-ink: #1b2d24;
+    .share-card.theme-brown {
+      --card-border: #a39987;
+      --card-border-rgb: 163, 153, 135;
+      --card-accent: #724548;
+      --card-bg: #f9f8f5;
+      --card-ink: #4e171b;
     }
 
     .share-card.theme-gold {
-      --card-border: #d4ad6a;
-      --card-border-rgb: 212, 173, 106;
-      --card-accent: #b07823;
+      --card-border: #e6c143;
+      --card-border-rgb: 230, 193, 67;
+      --card-accent: #ff6524;
       --card-bg: #fdfaf2;
-      --card-ink: #382410;
+      --card-ink: #5a5650;
     }
 
     .share-card {
@@ -1067,92 +1097,98 @@
   <main class="app">
     <section id="scanView" class="view scan-view">
       <div class="scan-card glass">
-        <h1 class="headline">今日灵签</h1>
-        <p class="sub">用手机扫描二维码，进入抽签。页面会从“大吉、吉、小吉”里为你开出今日一签。</p>
-        <div class="qr-wrap"><div id="qr" aria-label="扫码进入今日灵签"><img src="qr-entry.png" alt="扫码进入今日灵签"></div></div>
-        <p id="qrLink" class="qr-link"></p>
-        <button class="primary" data-go="start">本机预览</button>
+        <!-- Logo Header -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <img src="logo.png" alt="Logo" style="width: 76px; height: 76px; border-radius: 18px; box-shadow: 0 8px 24px rgba(78, 23, 27, 0.28); border: 2px solid rgba(255, 220, 162, 0.15);">
+        </div>
+        <h1 class="headline">Daily Fortune Oracle</h1>
+        <p class="sub">Scan the QR code with your phone to draw your daily fortune and reveal what destiny awaits you.</p>
+
+        <div class="qr-wrap">
+          <div id="qr" aria-label="Scan to enter Daily Fortune Oracle"></div>
+        </div>
+        
+        <p id="qrLink" class="qr-link" style="margin-bottom: 2px; display: none;"></p>
+        <p id="qrNote" style="margin: 0 auto 12px; font-size: 12px; color: var(--muted); line-height: 1.4; max-width: 22em; display: none;"></p>
+
+        <button class="primary" data-go="start">Start Here</button>
         <div class="secondary-row">
-          <button class="pill" data-copy>复制链接</button>
-          <button class="pill" data-go="result" data-randomize>直接看签</button>
+          <button class="pill" data-copy>Copy Link</button>
+          <button class="pill" data-go="result" data-randomize>Direct View</button>
         </div>
       </div>
     </section>
 
     <section id="startView" class="view start-view">
       <div class="intro glass">
-        <h1 class="headline" style="text-align: center;">请静心</h1>
-        <p class="sub" style="text-align: center;">输入称呼，默念所求，轻触木鱼以涤净心中杂念。</p>
+        <!-- Logo Header -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <img src="logo.png" alt="Logo" style="width: 68px; height: 68px; border-radius: 16px; box-shadow: 0 8px 20px rgba(78, 23, 27, 0.28); border: 2px solid rgba(255, 220, 162, 0.15);">
+        </div>
+        <h1 class="headline" style="text-align: center;">Calm Your Mind</h1>
+        <p class="sub" style="text-align: center;">Enter your name, focus on your wish, and tap the wooden fish to clear away distractions.</p>
         
-        <!-- 姓名输入框 -->
+        <!-- Name Input -->
         <div style="margin: 14px 0 16px; text-align: left;">
-          <label for="userNameInput" style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">您的称呼（必填，生成专属签卡）：</label>
-          <input type="text" id="userNameInput" maxlength="10" placeholder="例如：知己、行者" style="width: 100%; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: var(--ink); padding: 0 14px; font-size: 14px; outline: none; transition: border 0.3s; font-family: inherit;">
+          <label for="userNameInput" style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Your Name (Required, to generate custom card):</label>
+          <input type="text" id="userNameInput" maxlength="10" placeholder="e.g., Traveler, Seeker" style="width: 100%; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: var(--ink); padding: 0 14px; font-size: 14px; outline: none; transition: border 0.3s; font-family: inherit;">
         </div>
 
-        <!-- 电子木鱼容器 -->
+        <!-- Muyu Button -->
         <div class="muyu-container" id="muyuBtn">
-          <!-- Floating text container -->
           <div id="floatingContainer" style="position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 10;"></div>
           
           <div id="muyuWrap" style="transition: transform 0.08s ease; transform-origin: center; position: relative;">
             <svg id="muyuSvg" viewBox="0 0 100 100" width="85" height="85" style="cursor: pointer; fill: none; stroke: var(--gold); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity 0.2s;">
-              <!-- Body -->
               <path d="M 50 12 C 28 12 18 28 18 52 C 18 72 32 82 50 82 C 68 82 82 72 82 52 C 82 28 72 12 50 12 Z" />
-              <!-- Grooves -->
               <path d="M 32 50 Q 50 64 68 50" />
               <path d="M 38 40 Q 50 48 62 40" />
-              <!-- Handle -->
               <path d="M 40 82 Q 50 72 60 82" />
               <circle cx="50" cy="74" r="3" />
-              <!-- Edges -->
               <path d="M 24 52 Q 18 56 24 60" />
               <path d="M 76 52 Q 82 56 76 60" />
             </svg>
-            <!-- Wooden Fish Mallet -->
             <div id="muyuMallet">
               <svg viewBox="0 0 100 100" width="100%" height="100%" style="fill: none; stroke: var(--gold); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;">
-                <!-- Handle -->
                 <path d="M 80 80 L 35 35" />
-                <!-- Head -->
                 <circle cx="30" cy="30" r="14" style="fill: var(--gold); stroke: var(--gold);" />
               </svg>
             </div>
           </div>
         </div>
 
-        <!-- 敲击计数显示 -->
+        <!-- Taps Count Display -->
         <div style="text-align: center; margin: 4px 0 10px; font-size: 14px; color: var(--gold); font-weight: 700;">
-          已敲木鱼 <span id="muyuCountDisplay" style="font-size: 18px; color: var(--ink); background: rgba(255,255,255,0.12); padding: 2px 8px; border-radius: 8px; margin: 0 4px; border: 1px solid rgba(255,255,255,0.15);">0</span> 次
+          Wooden Fish Taps: <span id="muyuCountDisplay" style="font-size: 18px; color: var(--ink); background: rgba(255,255,255,0.12); padding: 2px 8px; border-radius: 8px; margin: 0 4px; border: 1px solid rgba(255,255,255,0.15);">0</span>
         </div>
 
-        <!-- 计数器点 indicators -->
+        <!-- Indicators -->
         <div style="display: flex; justify-content: center; gap: 10px; margin: 6px 0 12px;">
           <span class="muyu-dot" id="dot1"></span>
           <span class="muyu-dot" id="dot2"></span>
           <span class="muyu-dot" id="dot3"></span>
         </div>
 
-        <button id="startRitualBtn" class="primary" style="margin-top: 10px; min-height: 52px;">静心完毕，开启求签</button>
+        <button id="startRitualBtn" class="primary" style="margin-top: 10px; min-height: 52px;">Mind Cleared, Draw Fortune</button>
 
         <div class="secondary-row">
-          <button class="pill" data-go="scan">返回二维码</button>
-          <button class="pill" id="skipRitualBtn">直接求签</button>
+          <button class="pill" data-go="scan">Back to QR Code</button>
+          <button class="pill" id="skipRitualBtn">Direct Draw</button>
         </div>
-        <p class="ritual-note" style="margin-top: 14px;">在屏幕上轻触木鱼静心，输入称呼后，即可开启求签仪式。称呼将用于生成专属的分享签卡。</p>
+        <p class="ritual-note" style="margin-top: 14px;">Tap the wooden fish to quiet your mind. Enter your name and click the button to proceed. Your name will be used to generate your custom fortune card.</p>
       </div>
     </section>
 
     <section id="ritualView" class="view ritual-view">
       <div class="ritual-card glass">
-        <h1 class="headline">求签仪式</h1>
-        <p class="sub">静心祈愿，点击签筒或下方按钮进行摇签。</p>
+        <h1 class="headline">Oracle Ritual</h1>
+        <p class="sub">Focus on your wish. Tap the cylinder or click the button below to shake.</p>
         
         <div class="cylinder-stage">
           <div id="cylinderGlow" class="cylinder-glow"></div>
           <div id="cylinder" class="cylinder">
             <div class="cylinder-body">
-              <span class="cylinder-label">今日<br>灵签</span>
+              <span class="cylinder-label" style="font-size: 12px; letter-spacing: 1px; line-height: 1.3;">DAILY<br>ORACLE</span>
             </div>
             <div class="sticks">
               <div class="stick s1"></div>
@@ -1164,15 +1200,15 @@
             </div>
           </div>
           <div id="drawnStick" class="drawn-stick">
-            <div class="stick-tag">今日一签</div>
-            <div id="drawnStickText" class="stick-text">大吉签</div>
+            <div class="stick-tag" style="font-size: 8px;">Oracle Stick</div>
+            <div id="drawnStickText" class="stick-text" style="font-size: 14px; letter-spacing: 2px;">Great Fortune</div>
           </div>
         </div>
 
-        <button id="shakeBtn" class="primary">摇晃签筒</button>
+        <button id="shakeBtn" class="primary">Shake Cylinder</button>
         <div class="secondary-row" style="width: 100%;">
-          <button class="pill" data-go="start">重新静心</button>
-          <button class="pill" data-go="result" data-randomize>跳过动效</button>
+          <button class="pill" data-go="start">Recenter Mind</button>
+          <button class="pill" data-go="result" data-randomize>Skip Animation</button>
         </div>
       </div>
     </section>
@@ -1180,97 +1216,129 @@
     <section id="coverView" class="view cover-view">
       <div class="cover-card glass">
         <div class="slip-stage">
-          <div class="paper is-left" data-seal="安"></div>
-          <div class="paper is-main" data-seal="启">
-            <div>
-              <div class="paper-kicker">今日签封</div>
-              <h2 class="paper-title">待启</h2>
-              <p class="paper-copy">签文已落在封中。轻触信封或点击下方揭签按钮开封。</p>
+          <div class="paper is-left" data-seal="P">
+            <div class="omamori-knot">
+              <svg viewBox="0 0 40 40" width="100%" height="100%">
+                <circle cx="20" cy="8" r="3.5" fill="#311528" stroke="#e6c143" stroke-width="1" />
+                <path d="M 20 18 Q 12 10 8 18 Q 6 22 12 22 Q 20 22 20 18 M 20 18 Q 28 10 32 18 Q 34 22 28 22 Q 20 22 20 18" fill="none" stroke="#b2434a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 20 18 Q 20 10 20 8 Q 20 6 20 8" fill="none" stroke="#b2434a" stroke-width="2.2" />
+                <path d="M 18 20 L 14 36 M 22 20 L 26 36" fill="none" stroke="#b2434a" stroke-width="2.2" stroke-linecap="round" />
+                <circle cx="20" cy="18" r="3" fill="#e6c143" stroke="#b2434a" stroke-width="1" />
+              </svg>
             </div>
           </div>
-          <div class="paper is-right" data-seal="吉"></div>
+          <div class="paper is-main" data-seal="O">
+            <div class="omamori-knot">
+              <svg viewBox="0 0 40 40" width="100%" height="100%">
+                <circle cx="20" cy="8" r="3.5" fill="#311528" stroke="#e6c143" stroke-width="1" />
+                <path d="M 20 18 Q 12 10 8 18 Q 6 22 12 22 Q 20 22 20 18 M 20 18 Q 28 10 32 18 Q 34 22 28 22 Q 20 22 20 18" fill="none" stroke="#b2434a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 20 18 Q 20 10 20 8 Q 20 6 20 8" fill="none" stroke="#b2434a" stroke-width="2.2" />
+                <path d="M 18 20 L 14 36 M 22 20 L 26 36" fill="none" stroke="#b2434a" stroke-width="2.2" stroke-linecap="round" />
+                <circle cx="20" cy="18" r="3" fill="#e6c143" stroke="#b2434a" stroke-width="1" />
+              </svg>
+            </div>
+            <div>
+              <div class="paper-kicker">Today's Seal</div>
+              <h2 class="paper-title">Sealed</h2>
+              <p class="paper-copy">Your fortune is sealed inside. Tap the envelope or click below to reveal.</p>
+            </div>
+          </div>
+          <div class="paper is-right" data-seal="L">
+            <div class="omamori-knot">
+              <svg viewBox="0 0 40 40" width="100%" height="100%">
+                <circle cx="20" cy="8" r="3.5" fill="#311528" stroke="#e6c143" stroke-width="1" />
+                <path d="M 20 18 Q 12 10 8 18 Q 6 22 12 22 Q 20 22 20 18 M 20 18 Q 28 10 32 18 Q 34 22 28 22 Q 20 22 20 18" fill="none" stroke="#b2434a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 20 18 Q 20 10 20 8 Q 20 6 20 8" fill="none" stroke="#b2434a" stroke-width="2.2" />
+                <path d="M 18 20 L 14 36 M 22 20 L 26 36" fill="none" stroke="#b2434a" stroke-width="2.2" stroke-linecap="round" />
+                <circle cx="20" cy="18" r="3" fill="#e6c143" stroke="#b2434a" stroke-width="1" />
+              </svg>
+            </div>
+          </div>
         </div>
-        <p class="cover-copy">轻触揭签，查看今日运势、行动建议和一句提醒。</p>
-        <button class="primary" id="revealBtn">揭签</button>
+        <p class="cover-copy">Tap to reveal your daily fortune details, action advice, and daily reminder.</p>
+        <button class="primary" id="revealBtn">Reveal Fortune</button>
       </div>
     </section>
 
     <section id="resultView" class="view result-view">
       <div class="result-hero glass">
-        <div class="charm">签</div>
+        <div class="charm" style="font-size: 18px; letter-spacing: 1px; font-weight: 900;">STICK</div>
         <div id="resultNameLabel" style="font-size: 14px; color: var(--muted); margin-bottom: 6px; display: none;"></div>
-        <h1 id="fortuneName" class="fortune-name">大吉</h1>
-        <p id="fortunePoem" class="fortune-poem">云开月明，所行多顺。今日宜主动一步，喜事自会靠近。</p>
+        <h1 id="fortuneName" class="fortune-name">Great Fortune</h1>
+        <p id="fortunePoem" class="fortune-poem">The sun rises over ten thousand miles, step by step towards the clouds.</p>
       </div>
       <div id="readingList" class="reading-list"></div>
       
-      <!-- 签卡定制区域 -->
+      <!-- Customization Panel -->
       <div class="customize-panel glass" style="padding: 16px; border-radius: 24px; margin-top: 4px; text-align: left; display: grid; gap: 14px;">
-        <h3 style="margin: 0; font-size: 14px; color: var(--gold); letter-spacing: 0.5px;">定制您的分享签卡</h3>
+        <h3 style="margin: 0; font-size: 14px; color: var(--gold); letter-spacing: 0.5px;">Customize Your Share Card</h3>
         
-        <!-- 求问类型 -->
+        <!-- Oracle Subject -->
         <div>
-          <span style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px;">选择所问主题：</span>
+          <span style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px;">Select Oracle Subject:</span>
           <div class="pill-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="small-pill active" data-subject="总运">总运</button>
-            <button class="small-pill" data-subject="姻缘">姻缘</button>
-            <button class="small-pill" data-subject="事业">事业</button>
-            <button class="small-pill" data-subject="财运">财运</button>
-            <button class="small-pill" data-subject="学业">学业</button>
-            <button class="small-pill" data-subject="健康">健康</button>
+            <button class="small-pill active" data-subject="General">General</button>
+            <button class="small-pill" data-subject="Love">Love</button>
+            <button class="small-pill" data-subject="Career">Career</button>
+            <button class="small-pill" data-subject="Wealth">Wealth</button>
+            <button class="small-pill" data-subject="Academics">Academics</button>
+            <button class="small-pill" data-subject="Health">Health</button>
           </div>
         </div>
         
-        <!-- 签卡配色 -->
+        <!-- Card Skin -->
         <div>
-          <span style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px;">选择卡片皮肤：</span>
+          <span style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px;">Select Card Skin:</span>
           <div class="color-picker" style="display: flex; gap: 14px; align-items: center;">
-            <button class="color-dot active red" data-theme="red" style="background: #b81d33; border: 2px solid #fff;"></button>
-            <button class="color-dot green" data-theme="green" style="background: #2a6f56; border: 2px solid transparent;"></button>
-            <button class="color-dot gold" data-theme="gold" style="background: #d49e4d; border: 2px solid transparent;"></button>
-            <span id="themeNameLabel" style="font-size: 12px; color: var(--muted);">朱砂红</span>
+            <button class="color-dot active red" data-theme="red" style="background: #b2434a; border: 2px solid #fff;"></button>
+            <button class="color-dot brown" data-theme="brown" style="background: #a39987; border: 2px solid transparent;"></button>
+            <button class="color-dot gold" data-theme="gold" style="background: #e6c143; border: 2px solid transparent;"></button>
+            <span id="themeNameLabel" style="font-size: 12px; color: var(--muted);">Cinnabar Red</span>
           </div>
         </div>
       </div>
 
       <div class="actions" style="grid-template-columns: 1fr; margin-bottom: 2px;">
-        <button class="primary" style="margin-top: 0; min-height: 48px;" id="shareCardBtn">生成分享签卡</button>
+        <button class="primary" style="margin-top: 0; min-height: 48px;" id="shareCardBtn">Generate Share Card</button>
       </div>
       <div class="actions">
-        <button class="pill" data-go="start">重新求签</button>
-        <button class="pill" data-go="scan">二维码进入</button>
+        <button class="pill" data-go="start">Draw Again</button>
+        <button class="pill" data-go="scan">Back to QR Code</button>
       </div>
     </section>
 
-    <!-- 分享卡片 Modal -->
+    <!-- Share Card Modal -->
     <div id="shareModal" class="share-modal" aria-hidden="true">
       <div class="share-modal-content">
         <div id="shareCard" class="share-card">
           <div class="card-border-outer">
             <div class="card-border-inner">
               <div class="card-header">
-                <span class="card-seal">今日灵签</span>
-                <span id="cardDate" class="card-date">二零二六年六月十八日</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <img src="logo.png" alt="Logo" style="width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(var(--card-border-rgb), 0.25);">
+                  <span class="card-seal" style="font-size: 10px;">DAILY ORACLE</span>
+                </div>
+                <span id="cardDate" class="card-date">June 23, 2026</span>
               </div>
               
               <div class="card-body">
-                <div id="cardUser" class="card-user">有缘人 问卜</div>
+                <div id="cardUser" class="card-user" style="font-size: 14px;">Seeker Oracle</div>
                 <div class="card-divider"></div>
-                <div id="cardFortune" class="card-fortune-stamp">大吉</div>
-                <div id="cardPoem" class="card-poem-vertical">云开月明，所行多顺。今日宜主动一步，喜事自会靠近。</div>
+                <div id="cardFortune" class="card-fortune-stamp">Great Fortune</div>
+                <div id="cardPoem" class="card-poem-vertical" style="writing-mode: unset; text-orientation: unset; transform: unset; text-align: center; margin: 12px auto 0; font-size: 13px; line-height: 1.5; letter-spacing: 0.5px; height: auto;">The sun rises over ten thousand miles, step by step towards the clouds.</div>
               </div>
               
               <div class="card-footer">
                 <div class="card-qr-container">
                   <div id="cardQr"></div>
-                  <span>扫码亦求一签</span>
+                  <span style="writing-mode: unset; font-size: 8px; letter-spacing: 0.5px; font-weight: 500;">Scan to Draw Yours</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <p class="share-tip">提示：截图或长按上方卡片即可分享</p>
-        <button id="closeShareBtn" class="primary" style="margin-top: 10px; width: 100%; min-height: 46px;">返回</button>
+        <p class="share-tip">Tip: Screenshot or long-press the card above to save & share</p>
+        <button id="closeShareBtn" class="primary" style="margin-top: 10px; width: 100%; min-height: 46px;">Close</button>
       </div>
     </div>
   </main>
@@ -1278,63 +1346,63 @@
   <script>
     const fortunes = {
       super_great: {
-        name: "上上",
-        poem: "云开日出万里程，指日高升步步前。宜行好事，多结善缘。",
-        accent: "#9de7ff",
+        name: "Superb Fortune",
+        poem: "The sun rises over ten thousand miles, step by step towards the clouds. Do good deeds, sow seeds of kindness.",
+        accent: "#ff2555",
         readings: [
-          ["今日运势", "鸿运当头，所求皆顺。无论是事业还是人际，都有贵人暗中相助。"],
-          ["行动建议", "今日适合开启新计划，或者表达心意，积极行动会有意想不到的收获。"],
-          ["提醒", "满招损，谦受益。好运来临时更需保持低调与感恩之心。"]
+          ["Daily Fortune", "Good luck shines high, everything is smooth. Nobles support you in career and relationships."],
+          ["Advice", "Perfect day to start new plans or express your feelings. Active steps bring unexpected rewards."],
+          ["Reminder", "Humility brings benefit. Keep a low profile and a grateful heart in good times."]
         ]
       },
       great: {
-        name: "大吉",
-        poem: "风雷相送出平川，一跃青云路万千。今日宜展现自我，把握良机。",
-        accent: "#ffe3a3",
+        name: "Great Fortune",
+        poem: "Wind and thunder send you out of the valley, a single leap leads to the high road. Show your talents, seize the day.",
+        accent: "#ff6524",
         readings: [
-          ["今日运势", "气势如虹，才华展露。在工作中或学业上容易获得认可与赞赏。"],
-          ["行动建议", "主动承担一些有挑战性的任务，多在公开场合发表自己的观点。"],
-          ["提醒", "莫因一时得意而疏忽细节，稳步前行才能让好运持久。"]
+          ["Daily Fortune", "Strong momentum, talents revealed. Highly likely to receive recognition in work or studies."],
+          ["Advice", "Take on challenging tasks, express your views clearly in public."],
+          ["Reminder", "Do not let success blind you to detail. Steady steps make good fortune last."]
         ]
       },
       good: {
-        name: "中吉",
-        poem: "风平水暖，稳中见喜。把节奏放缓，答案会慢慢浮出来。",
-        accent: "#99f0d4",
+        name: "Moderate Fortune",
+        poem: "Smooth sailing on warm waters. Slow down, and the answers will reveal themselves.",
+        accent: "#e6c143",
         readings: [
-          ["今日运势", "整体平稳顺遂，适合处理日常事务、修补漏洞或重温旧好。"],
-          ["行动建议", "按部就班完成今日计划，午后适合喝杯茶或与旧友联系。"],
-          ["提醒", "不要急于求成，有些事情需要时间沉淀才能看到结果。"]
+          ["Daily Fortune", "Stable and favorable. Good for handling daily chores, mending issues, or renewing bonds."],
+          ["Advice", "Proceed step-by-step. Perfect afternoon for a quiet tea or checking in on old friends."],
+          ["Reminder", "Do not rush for quick success. Some things need time to mature."]
         ]
       },
       small: {
-        name: "小吉",
-        poem: "微光入户，小喜可期。暂不求快，守住心气便是进展。",
-        accent: "#ff9fc7",
+        name: "Small Fortune",
+        poem: "A sliver of light enters the window, small joys are ahead. Patience is progress.",
+        accent: "#f59663",
         readings: [
-          ["今日运势", "小有收获，生活中会遇到一些温馨的微小瞬间或小确幸。"],
-          ["行动建议", "给身边的亲人或同事带份小礼物，或者整理一下桌面换个心情。"],
-          ["提醒", "专注自己手头的事，不要被外界的嘈杂杂音打乱了阵脚。"]
+          ["Daily Fortune", "Modest gains. You will encounter warm, tiny moments of happiness today."],
+          ["Advice", "Bring a small gift to family or colleagues, or tidy up your desk for a fresh start."],
+          ["Reminder", "Focus on your tasks. Do not let external noise disrupt your rhythm."]
         ]
       },
       half: {
-        name: "半吉",
-        poem: "顺水行舟不费力，扬帆起航正当时。凡事顺应天时，自有安排。",
-        accent: "#cbf0a7",
+        name: "Half Fortune",
+        poem: "Sailing downwind takes no effort, a great time to set sail. Go with the flow, everything is arranged.",
+        accent: "#a39987",
         readings: [
-          ["今日运势", "运势平顺，阻碍较少。只要顺应自然规律，就能轻松应对。"],
-          ["行动建议", "适合做一些规划、构思的工作，多倾听他人的意见。"],
-          ["提醒", "顺水推舟虽好，但也要把控方向，切忌盲目跟风。"]
+          ["Daily Fortune", "Smooth and easy with few obstacles. Adapt to natural laws to succeed."],
+          ["Advice", "Good for planning, brainstorming, and listening to others' suggestions."],
+          ["Reminder", "Going with the flow is fine, but stay alert to keep your direction."]
         ]
       },
       peace: {
-        name: "平吉",
-        poem: "万里无云碧空净，清风拂面步履轻。平淡之中见真意，安之若素。",
-        accent: "#e3d2ff",
+        name: "Peaceful Fortune",
+        poem: "No clouds in the blue sky, walking lightly in the breeze. Find true meaning in peaceful simplicity.",
+        accent: "#ffdca2",
         readings: [
-          ["今日运势", "波澜不惊，无大喜亦无大忧。适合修身养性，放松身心。"],
-          ["行动建议", "多做深呼吸，下班后散散步，或者读一本喜欢的小说。"],
-          ["提醒", "平静是最大的福气，好好享受这难得的安闲时光。"]
+          ["Daily Fortune", "Calm waters, no big ups or downs. Great day to relax and nurture your inner peace."],
+          ["Advice", "Take deep breaths, take a walk after work, or read a book you love."],
+          ["Reminder", "Peace is the greatest blessing. Enjoy this quiet time."]
         ]
       }
     };
@@ -1571,7 +1639,7 @@
         if (glow) glow.style.opacity = "0";
         if (shakeBtn) {
           shakeBtn.disabled = false;
-          shakeBtn.textContent = "摇晃签筒";
+          shakeBtn.textContent = "Shake Cylinder";
         }
       }
       
@@ -1597,7 +1665,7 @@
       const nameLabel = document.getElementById("resultNameLabel");
       if (nameLabel) {
         if (userName) {
-          nameLabel.textContent = `— ${userName} 的今日一签 —`;
+          nameLabel.textContent = `— ${userName}'s Daily Fortune —`;
           nameLabel.style.display = "block";
         } else {
           nameLabel.style.display = "none";
@@ -1605,39 +1673,21 @@
       }
     }
 
-    // Traditional Chinese date converter
+    // Beautiful English date formatter
     function getChineseDate() {
       const now = new Date();
-      const year = now.getFullYear().toString().split("").map(d => "零一二三四五六七八九"[d]).join("");
-      const months = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"];
-      const mStr = months[now.getMonth()] + "月";
-      
-      const day = now.getDate();
-      let dStr = "";
-      if (day <= 10) {
-        dStr = "初" + "一二三四五六七八九十"[day - 1];
-      } else if (day < 20) {
-        dStr = "十" + "一二三四五六七八九"[day - 10 - 1];
-      } else if (day === 20) {
-        dStr = "二十";
-      } else if (day < 30) {
-        dStr = "廿" + "一二三四五六七八九"[day - 20 - 1];
-      } else if (day === 30) {
-        dStr = "三十";
-      } else {
-        dStr = "卅一";
-      }
-      return `${year}年 ${mStr}${dStr}`;
+      const options = { month: 'long', day: 'numeric', year: 'numeric' };
+      return now.toLocaleDateString('en-US', options);
     }
 
     // Setup interactive events
     document.addEventListener("DOMContentLoaded", () => {
-      // Setup dynamic QR
-      document.getElementById("qrLink").textContent = targetUrl();
+      // Setup dynamic QR pointing directly to the live site
+      const activeUrl = "https://viviank0930.github.io/-/#start";
       const qrContainer = document.getElementById("qr");
-      if (qrContainer) {
-        qrContainer.innerHTML = makeQrSvg(targetUrl());
-      }
+      const qrLink = document.getElementById("qrLink");
+      if (qrContainer) qrContainer.innerHTML = makeQrSvg(activeUrl);
+      if (qrLink) qrLink.textContent = activeUrl;
 
       // Cylinder Shake interaction
       const cylinder = document.getElementById("cylinder");
@@ -1655,7 +1705,7 @@
         cylinder.classList.add("shaking");
         if (glow) glow.style.opacity = "0.8";
         shakeBtn.disabled = true;
-        shakeBtn.textContent = "正在虔诚求签...";
+        shakeBtn.textContent = "Asking Oracle...";
         
         SoundSynth.playClatter();
         shakeSoundInterval = setInterval(() => {
@@ -1667,12 +1717,12 @@
           cylinder.classList.remove("shaking");
           if (glow) glow.style.opacity = "0.2";
           currentFortune = randomFortune();
-          drawnStickText.textContent = fortunes[currentFortune].name + "签";
+          drawnStickText.textContent = fortunes[currentFortune].name;
           drawnStick.classList.add("show");
           
           SoundSynth.playChime(); // Play drawn chime!
           
-          shakeBtn.textContent = "已求得灵签，请点击竹签揭开";
+          shakeBtn.textContent = "Fortune Drawn. Tap Stick to Reveal";
           isShaking = false;
         }, 1500);
       }
@@ -1701,7 +1751,7 @@
       if (mainPaper) mainPaper.addEventListener("click", triggerReveal);
 
       // Customize Panel Events
-      let selectedSubject = "总运";
+      let selectedSubject = "General";
       let selectedTheme = "red";
       
       const smallPills = document.querySelectorAll(".small-pill");
@@ -1717,9 +1767,9 @@
       const colorDots = document.querySelectorAll(".color-dot");
       const themeNameLabel = document.getElementById("themeNameLabel");
       const themesMap = {
-        red: "朱砂红",
-        green: "竹青绿",
-        gold: "香槟金"
+        red: "Cinnabar Red",
+        brown: "Earth Tan",
+        gold: "Champagne Gold"
       };
       colorDots.forEach(dot => {
         dot.addEventListener("click", () => {
@@ -1740,8 +1790,8 @@
         shareCardBtn.addEventListener("click", () => {
           document.getElementById("cardDate").textContent = getChineseDate();
           
-          const userText = (sessionStorage.getItem("fortune-username") || "有缘人");
-          document.getElementById("cardUser").textContent = `${userText} 问卜 [${selectedSubject}]`;
+          const userText = (sessionStorage.getItem("fortune-username") || "Seeker");
+          document.getElementById("cardUser").textContent = `${userText} • ${selectedSubject}`;
           
           const item = fortunes[currentFortune];
           const stamp = document.getElementById("cardFortune");
@@ -1774,7 +1824,7 @@
       // Wooden Fish click handler setup
       const muyuBtn = document.getElementById("muyuBtn");
       const floatingContainer = document.getElementById("floatingContainer");
-      const textPool = ["功德 +1", "静心 +1", "好运 +1", "福气 +1", "烦恼 -1", "智慧 +1"];
+      const textPool = ["Merit +1", "Inner Peace +1", "Good Luck +1", "Blessings +1", "Worries -1", "Wisdom +1"];
 
       if (muyuBtn) {
         muyuBtn.addEventListener("click", () => {
@@ -1881,8 +1931,8 @@
       }
       if (copy) {
         navigator.clipboard?.writeText(targetUrl());
-        copy.textContent = "已复制";
-        setTimeout(() => copy.textContent = "复制链接", 1200);
+        copy.textContent = "Copied";
+        setTimeout(() => copy.textContent = "Copy Link", 1200);
       }
     });
 
@@ -1900,10 +1950,10 @@
       let d = "";
       for (let y = 0; y < size; y++) {
         for (let x = 0; x < size; x++) {
-          if (qr[y][x]) d += `M${x + 4},${y + 4}h1v1h-1z`;
+          if (qr[y][x]) d += `M${x + 6},${y + 6}h1.05v1.05h-1.05z`;
         }
       }
-      return `<svg viewBox="0 0 ${size + 8} ${size + 8}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#111"/></svg>`;
+      return `<svg width="100%" height="100%" viewBox="0 0 ${size + 12} ${size + 12}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#ffffff"/><path d="${d}" fill="#000000"/></svg>`;
     }
 
     const QR = (() => {
@@ -1938,7 +1988,9 @@
         for (const byte of data) {
           const factor = byte ^ res.shift();
           res.push(0);
-          for (let i = 0; i < eccCodewords; i++) res[i] ^= gfMul(poly[i], factor);
+          for (let i = 0; i < eccCodewords; i++) {
+            res[i] ^= gfMul(poly[eccCodewords - 1 - i], factor);
+          }
         }
         return res;
       }
@@ -2013,7 +2065,7 @@
         const format = formatBits(1, 0);
         for (let i = 0; i < 15; i++) {
           const bitVal = ((format >> i) & 1) === 1;
-          const a = [[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]][i];
+          const a = [[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[7,8],[8,8],[8,7],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0]][i];
           const b = [[size-1,8],[size-2,8],[size-3,8],[size-4,8],[size-5,8],[size-6,8],[size-7,8],[8,size-8],[8,size-7],[8,size-6],[8,size-5],[8,size-4],[8,size-3],[8,size-2],[8,size-1]][i];
           m[a[0]][a[1]] = bitVal;
           m[b[0]][b[1]] = bitVal;
