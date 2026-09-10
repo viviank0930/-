@@ -1,0 +1,20 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {LiftReleaseGesture} from '../gesture.js';
+const p=y=>({x:.5,y,id:'Right'});
+function sample(g,y,from,duration){let out;for(let t=from;t<=from+duration;t+=100)out=g.update(p(y),t);return out}
+test('one deliberate low-high-low cycle fires exactly once',()=>{const g=new LiftReleaseGesture();assert.equal(sample(g,.75,100,300).state,'lift');assert.equal(sample(g,.25,500,300).state,'release');assert.equal(g.update(p(.75),900).fire,true);assert.equal(g.update(p(.75),1000).fire,false);assert.equal(g.update(p(.75),1100).fire,false)});
+test('a stationary hand and minor jitter never cast',()=>{const g=new LiftReleaseGesture();for(let t=100;t<10000;t+=100)assert.equal(g.update(p(.65+Math.sin(t)*.03),t).fire,false)});
+test('starting with an already raised hand does not cast',()=>{const g=new LiftReleaseGesture();sample(g,.25,100,1000);assert.equal(sample(g,.75,1200,500).fire,false)});
+test('hand disappearance cancels arming instead of simulating release',()=>{const g=new LiftReleaseGesture();sample(g,.75,100,300);sample(g,.25,500,300);assert.equal(g.update(null,1500).fire,false);assert.equal(sample(g,.75,1600,300).fire,false)});
+test('switching hands or tracking jumping does not cast',()=>{const g=new LiftReleaseGesture();sample(g,.75,100,300);sample(g,.25,500,300);assert.equal(g.update({x:.5,y:.75,id:'Left'},900).fire,false);assert.equal(g.update({x:.95,y:.75,id:'Left'},1000).fire,false)});
+test('expired raised position must begin a fresh cycle',()=>{const g=new LiftReleaseGesture();sample(g,.75,100,300);sample(g,.25,500,5800);assert.equal(sample(g,.75,6400,300).fire,false)});
+test('reset while a round is busy prevents stale release',()=>{const g=new LiftReleaseGesture();sample(g,.75,100,300);sample(g,.25,500,300);g.reset();assert.equal(sample(g,.75,900,300).fire,false)});
+test('natural mid-frame lift and release works without crossing fixed guide lines',()=>{const g=new LiftReleaseGesture();sample(g,.52,100,300);sample(g,.35,500,300);assert.equal(g.update(p(.53),900).fire,true);assert.equal(g.update(p(.53),1000).fire,false)});
+test('calibration tracks an initial hand position higher in the frame',()=>{const g=new LiftReleaseGesture();sample(g,.42,100,300);sample(g,.25,500,300);assert.equal(g.update(p(.43),900).fire,true);assert.equal(g.update(p(.43),1000).fire,false)});
+test('visual lift progress follows the raised hand and holds before release',()=>{const g=new LiftReleaseGesture();sample(g,.52,100,300);assert.ok(g.update(p(.47),500).progress>0);sample(g,.35,600,200);assert.equal(g.update(p(.4),900).progress,1)});
+
+test('quick peak with no pause then drop fires at the actual 8 fps camera rate',()=>{const g=new LiftReleaseGesture();const frames=[.56,.56,.56,.50,.40,.55,.65];const hits=frames.map((y,i)=>g.update(p(y),i*125).fire);assert.deepEqual(hits,[false,false,false,false,false,true,false])});
+test('small natural lowering need not return to the initial height',()=>{const g=new LiftReleaseGesture();sample(g,.56,100,300);assert.equal(g.update(p(.43),525).state,'release');assert.equal(g.update(p(.48),650).fire,false);assert.equal(g.update(p(.49),775).fire,true)});
+test('slow reversal accumulates downward distance',()=>{const g=new LiftReleaseGesture();sample(g,.56,100,300);g.update(p(.40),525);let hits=0;for(const [i,y] of [.41,.43,.45,.46,.48].entries())hits+=Number(g.update(p(y),650+i*125).fire);assert.equal(hits,1)});
+test('brief blurred frame does not discard a valid release',()=>{const g=new LiftReleaseGesture();sample(g,.56,100,300);g.update(p(.40),525);assert.equal(g.update(null,650).fire,false);assert.equal(g.update(p(.54),900).fire,true)});
+test('a raised hand with small tracking jitter does not release',()=>{const g=new LiftReleaseGesture();sample(g,.56,100,300);g.update(p(.40),525);for(let i=0;i<20;i++)assert.equal(g.update(p(.40+Math.sin(i)*.015),650+i*125).fire,false)});
+test('a release is accepted at slow camera frame rates',()=>{const g=new LiftReleaseGesture();[.56,.56,.56,.40].forEach((y,i)=>g.update(p(y),i*250));assert.equal(g.update(p(.54),1000).fire,true)});

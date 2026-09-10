@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {tr} from '../i18n.js';import {RULES,OUTCOMES,BLESSINGS,TOPICS} from '../logic.js';
+test('English covers all ritual rules, outcomes, themes and blessing content',()=>{for(const group of [RULES,OUTCOMES,BLESSINGS,TOPICS])for(const item of Object.values(group))for(const value of Object.values(item))assert.equal(/[\u3400-\u9fff]/.test(tr(value,'en')),false,`Missing English: ${value}`)});
+test('English handles variable casting counts and user names',()=>{assert.equal(tr('第3次 圣筊','en'),'Cast 3: Sacred result');assert.equal(tr('连续圣筊 2 / 3 次，连续次数已归零','en'),'Sacred streak: 2 / 3; streak reset');assert.equal(tr('Alex的今日祝福','en'),"Alex's daily blessing");assert.equal(tr('A question I wrote myself','en'),'A question I wrote myself')});
+test('Chinese originals remain intact',()=>{for(const b of BLESSINGS)assert.equal(tr(b.poem,'zh'),b.poem)});
